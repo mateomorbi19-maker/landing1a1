@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Construí un agente de ventas completo en 7 días · Programa 1 a 1</title>
+<meta name="description" content="Formación 1 a 1 donde armás, paso a paso, un agente de IA que atiende y vende por tu negocio. Al terminar, queda funcionando de verdad.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+<style>
+/* ===================== TOKENS ===================== */
+:root{
+  --void:#05070F;
+  --panel:#0A0F1D;
+  --card:#0C1424;
+  --card-2:#0F1A2E;
+  --blue:#2E6BFF;
+  --blue-bright:#4A86FF;
+  --cyan:#35D6FF;
+  --text:#E9F0FF;
+  --muted:#93A4C4;
+  --muted-2:#61708C;
+  --line:rgba(120,150,200,.14);
+  --line-2:rgba(120,150,200,.22);
+  --glass:rgba(255,255,255,.035);
+  --grad:linear-gradient(135deg,#2E6BFF 0%,#35D6FF 100%);
+  --grad-soft:linear-gradient(135deg,rgba(46,107,255,.16),rgba(53,214,255,.16));
+  --f-display:"Space Grotesk",system-ui,sans-serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --maxw:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--void);color:var(--text);
+  font-family:var(--f-body);font-size:17px;line-height:1.6;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;line-height:1.08;letter-spacing:-.02em;margin:0}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(53,214,255,.28);color:#fff}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mono{font-family:var(--f-mono)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+
+/* ===================== AMBIENT BACKGROUND ===================== */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+.blob.b1{width:620px;height:620px;top:-220px;left:-160px;background:radial-gradient(circle,#2E6BFF,transparent 68%);opacity:.42;animation:float1 20s ease-in-out infinite}
+.blob.b2{width:560px;height:560px;top:200px;right:-200px;background:radial-gradient(circle,#35D6FF,transparent 66%);opacity:.30;animation:float2 24s ease-in-out infinite}
+.blob.b3{width:520px;height:520px;bottom:-240px;left:34%;background:radial-gradient(circle,#5B3BFF,transparent 70%);opacity:.24;animation:float1 28s ease-in-out infinite}
+.grid{position:absolute;inset:0;background-image:radial-gradient(rgba(120,150,200,.10) 1px,transparent 1px);background-size:34px 34px;mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 30%,transparent 75%)}
+@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,50px)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-50px,30px)}}
+
+/* ===================== NAV ===================== */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .35s ease,border-color .35s ease,backdrop-filter .35s}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:16px 26px;display:flex;align-items:center;justify-content:space-between}
+.nav.scrolled{background:rgba(6,9,17,.78);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--f-display);font-weight:600;font-size:18px;letter-spacing:-.01em}
+.brand .dot{width:26px;height:26px;border-radius:8px;background:var(--grad);box-shadow:0 0 20px rgba(53,214,255,.5);display:grid;place-items:center;flex:none}
+.brand .dot svg{width:15px;height:15px;display:block}
+.brand-logo{height:34px;width:auto;display:block}
+.foot-in .brand-logo{height:28px}
+@media(max-width:560px){.brand-logo{height:28px}}
+.nav .btn-nav{font-size:14px;padding:10px 18px}
+@media(max-width:560px){.nav .btn-nav{display:none}}
+
+/* ===================== BUTTONS ===================== */
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-body);font-weight:600;border:none;cursor:pointer;border-radius:12px;transition:transform .18s cubic-bezier(.2,.7,.2,1),box-shadow .25s,filter .25s;white-space:nowrap}
+.btn-primary{background:var(--grad);color:#04101f;padding:16px 26px;font-size:16.5px;box-shadow:0 8px 30px -6px rgba(46,107,255,.55)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 42px -6px rgba(53,214,255,.6);filter:saturate(1.1)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary .arw{transition:transform .2s}
+.btn-primary:hover .arw{transform:translateX(4px)}
+.btn-nav{background:rgba(255,255,255,.06);border:1px solid var(--line-2);color:var(--text)}
+.btn-nav:hover{border-color:var(--blue-bright);background:rgba(46,107,255,.14)}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:12px}
+
+/* ===================== HERO ===================== */
+.hero{position:relative;z-index:1;padding:150px 0 90px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--f-mono);font-size:12.5px;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase;padding:7px 14px;border:1px solid var(--line-2);border-radius:99px;background:var(--glass);margin-bottom:26px}
+.eyebrow .pulse{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{font-size:clamp(38px,5.6vw,62px);font-weight:700;margin-bottom:22px}
+.hero .sub{font-size:clamp(17px,1.4vw,20px);color:var(--muted);max-width:33ch;margin-bottom:34px}
+.hero .sub b{color:var(--text);font-weight:600}
+.hero-cta{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.assur{font-family:var(--f-mono);font-size:12.5px;color:var(--muted-2);display:flex;align-items:center;gap:10px}
+.assur .sep{width:4px;height:4px;border-radius:50%;background:var(--muted-2)}
+
+/* ===================== CHAT DEMO (signature) ===================== */
+.chat{position:relative;background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--line-2);border-radius:22px;overflow:hidden;box-shadow:0 30px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.02) inset;max-width:430px;margin-left:auto;width:100%}
+.chat::before{content:"";position:absolute;inset:0;border-radius:22px;padding:1px;background:linear-gradient(140deg,rgba(53,214,255,.45),transparent 40%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.chat-head{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.chat-av{width:40px;height:40px;border-radius:12px;background:var(--grad);display:grid;place-items:center;flex:none;box-shadow:0 0 18px rgba(53,214,255,.45)}
+.chat-av svg{width:22px;height:22px}
+.chat-who{font-family:var(--f-display);font-weight:600;font-size:15px;line-height:1.2}
+.chat-status{font-family:var(--f-mono);font-size:11px;color:#49E39B;display:flex;align-items:center;gap:6px;margin-top:2px}
+.chat-status .on{width:6px;height:6px;border-radius:50%;background:#49E39B;box-shadow:0 0 8px #49E39B}
+.chat-body{height:344px;padding:20px 18px;overflow:hidden;display:flex;flex-direction:column;gap:11px;justify-content:flex-end}
+.bubble{max-width:80%;padding:11px 15px;border-radius:16px;font-size:14.5px;line-height:1.45;opacity:0;transform:translateY(12px) scale(.98);animation:pop .45s cubic-bezier(.2,.8,.2,1) forwards}
+.bubble.user{align-self:flex-end;background:rgba(255,255,255,.07);border:1px solid var(--line);border-bottom-right-radius:5px;color:#dbe6fb}
+.bubble.bot{align-self:flex-start;background:var(--grad);color:#04121f;border-bottom-left-radius:5px;font-weight:500;box-shadow:0 6px 22px -8px rgba(46,107,255,.6)}
+.bubble .lnk{display:block;margin-top:5px;font-family:var(--f-mono);font-size:12px;opacity:.9;word-break:break-all}
+@keyframes pop{to{opacity:1;transform:none}}
+.typing{align-self:flex-start;display:inline-flex;gap:5px;padding:14px 16px;background:var(--glass);border:1px solid var(--line);border-radius:16px;border-bottom-left-radius:5px}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:bounce 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+.chat-input{display:flex;align-items:center;gap:10px;padding:13px 16px;border-top:1px solid var(--line);color:var(--muted-2);font-size:14px}
+.chat-input .box{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:99px;padding:9px 15px}
+.chat-input .send{width:34px;height:34px;border-radius:50%;background:var(--grad);display:grid;place-items:center;flex:none}
+.chat-input .send svg{width:15px;height:15px}
+
+/* ===================== SECTION SHELL ===================== */
+.section{position:relative;z-index:1;padding:96px 0}
+.sec-eyebrow{font-family:var(--f-mono);font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px}
+.sec-title{font-size:clamp(28px,3.4vw,42px);font-weight:600;max-width:20ch}
+.sec-lead{color:var(--muted);font-size:18px;max-width:56ch;margin-top:16px}
+
+/* ===================== FEATURES ===================== */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px}
+.card{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:30px 26px;transition:transform .3s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .3s;overflow:hidden}
+.card:hover{transform:translateY(-6px);border-color:rgba(53,214,255,.5);box-shadow:0 22px 50px -24px rgba(46,107,255,.5)}
+.card .ico{width:52px;height:52px;border-radius:14px;background:var(--grad-soft);border:1px solid var(--line-2);display:grid;place-items:center;margin-bottom:20px}
+.card .ico svg{width:26px;height:26px;stroke:var(--cyan)}
+.card h3{font-size:21px;margin-bottom:10px}
+.card p{color:var(--muted);font-size:15.5px}
+.card .glow{position:absolute;top:-40%;right:-30%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(53,214,255,.16),transparent 70%);opacity:0;transition:opacity .3s}
+.card:hover .glow{opacity:1}
+
+/* ===================== PROCESS ===================== */
+.proc{margin-top:56px;display:flex;flex-direction:column;gap:0;position:relative}
+.step{display:grid;grid-template-columns:96px 1fr;gap:28px;padding:30px 0;border-top:1px solid var(--line);transition:background .3s}
+.step:first-child{border-top:none}
+.step .num{font-family:var(--f-display);font-weight:700;font-size:60px;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.85;transition:opacity .3s,transform .3s}
+.step:hover .num{opacity:1;transform:translateX(4px)}
+.step .st-body{padding-top:4px}
+.step h3{font-size:24px;margin-bottom:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.step .tag{font-family:var(--f-mono);font-size:11px;color:var(--cyan);border:1px solid var(--line-2);padding:3px 10px;border-radius:99px;letter-spacing:.06em}
+.step p{color:var(--muted);font-size:16px;max-width:60ch}
+.step p b{color:#cdd9ef;font-weight:600}
+
+/* ===================== FINAL CTA ===================== */
+.final{position:relative;z-index:1;padding:40px 0 110px}
+.final-box{position:relative;border:1px solid var(--line-2);border-radius:26px;padding:64px 40px;text-align:center;overflow:hidden;background:linear-gradient(180deg,rgba(46,107,255,.10),rgba(53,214,255,.04))}
+.final-box::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 120% at 50% 0%,rgba(53,214,255,.20),transparent 60%);pointer-events:none}
+.final-box h2{position:relative;font-size:clamp(30px,4vw,48px);font-weight:700;max-width:16ch;margin:0 auto 18px}
+.final-box p{position:relative;color:var(--muted);font-size:18px;max-width:52ch;margin:0 auto 34px}
+.final-box .btn-primary{position:relative;font-size:18px;padding:19px 34px}
+.final-note{position:relative;margin-top:18px;font-family:var(--f-mono);font-size:12.5px;color:var(--muted-2)}
+
+/* ===================== FOOTER ===================== */
+footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px 0}
+.foot-in{max-width:var(--maxw);margin:0 auto;padding:0 26px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot-in .brand{font-size:16px}
+.foot-in small{color:var(--muted-2);font-family:var(--f-mono);font-size:12px}
+
+/* ===================== REVEAL ===================== */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:940px){
+  .hero-grid{grid-template-columns:1fr;gap:44px}
+  .hero{padding:130px 0 70px}
+  .hero .sub{max-width:46ch}
+  .chat{margin:0 auto;max-width:420px}
+  .feat-grid{grid-template-columns:1fr;gap:16px}
+}
+@media(max-width:560px){
+  body{font-size:16px}
+  .section{padding:74px 0}
+  .step{grid-template-columns:1fr;gap:8px;padding:26px 0}
+  .step .num{font-size:46px}
+  .final-box{padding:48px 24px}
+  .wrap,.nav-in,.foot-in{padding-left:20px;padding-right:20px}
+}
+
+/* ===================== REDUCED MOTION ===================== */
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none;transition:none}
+  .bubble{opacity:1;transform:none}
+  .blob{opacity:.28}
+}
+</style>
+</head>
+<body>
+
+<!-- ambient -->
+<div class="bg" aria-hidden="true">
+  <div class="grid"></div>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+</div>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top" aria-label="TEOTEC — Inicio">
+      <img src="logo.png" alt="TEOTEC" class="brand-logo">
+    </a>
+    <a class="btn btn-nav" data-cta href="#">Programa 1 a 1</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow reveal"><span class="pulse"></span>Formación 1 a 1 · Agentes de IA</span>
+        <h1 class="reveal">Construí un agente de ventas completo en <span class="grad">7 días</span></h1>
+        <p class="sub reveal">Una formación 1 a 1 donde armás, paso a paso, un agente de IA que atiende y vende por tu negocio. <b>Al terminar queda funcionando de verdad</b> — no es una demo.</p>
+        <div class="hero-cta reveal">
+          <a class="btn btn-primary" data-cta href="#">Quiero acceder al programa 1 a 1 <span class="arw" aria-hidden="true">→</span></a>
+          <span class="assur">Cupos limitados <span class="sep"></span> Acompañamiento personalizado</span>
+        </div>
+      </div>
+
+      <!-- signature: live chat demo -->
+      <div class="chat reveal" id="chat" aria-label="Demostración de un agente de ventas por chat">
+        <div class="chat-head">
+          <div class="chat-av" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5v3M7 6 5.5 4.5M17 6l1.5-1.5" stroke="#04121f" stroke-width="2" stroke-linecap="round"/><rect x="4.5" y="6.5" width="15" height="12" rx="4.5" fill="#04121f"/><circle cx="9" cy="12.5" r="1.7" fill="#fff"/><circle cx="15" cy="12.5" r="1.7" fill="#fff"/></svg>
+          </div>
+          <div>
+            <div class="chat-who">Agente de ventas</div>
+            <div class="chat-status"><span class="on"></span>en línea</div>
+          </div>
+        </div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chat-input" aria-hidden="true">
+          <div class="box">Escribí un mensaje…</div>
+          <div class="send"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l16-7-7 16-2-7-7-2z" fill="#04121f"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="agente">
+    <div class="wrap">
+      <p class="sec-eyebrow reveal">Lo que va a hacer tu agente</p>
+      <h2 class="sec-title reveal">Un vendedor que no duerme, no se distrae y no pierde una oportunidad</h2>
+
+      <div class="feat-grid">
+        <article class="card reveal">
+          <div class="glow"></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-1.2 4.4c-.8 1.3-3.9 3.1-8.3 3.1-1 0-2-.1-2.9-.3L3 20l1.4-4.1A8.5 8.5 0 0 1 3.5 8C4.8 4.6 8.3 3 12 3s7.2 1.7 8.5 5.1c.3.8.5 1.6.5 2.4Z"/></svg></div>
+          <h3>Vende por chat, solo</h3>
+          <p>Responde consultas, asesora y lleva al cliente hasta la compra con datos reales de tu negocio. Sin inventar precios ni stock.</p>
+        </article>
+
+        <article class="card reveal">
+          <div class="glow"></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></svg></div>
+          <h3>Filtra las consultas basura</h3>
+          <p>Atiende cada primer contacto, descarta a los que solo están mirando y le pasa a tu equipo únicamente las conversaciones que valen la pena cerrar.</p>
+        </article>
+
+        <article class="card reveal">
+          <div class="glow"></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.2a3.2 3.2 0 0 1 0 5.6M18 13.6a5.5 5.5 0 0 1 3 5.4"/></svg></div>
+          <h3>Cientos de chats a la vez</h3>
+          <p>Habla con miles de personas en simultáneo. Ninguna consulta queda sin respuesta, ni a las 3 de la mañana.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="section" id="proceso">
+    <div class="wrap">
+      <p class="sec-eyebrow reveal">Cómo lo construimos</p>
+      <h2 class="sec-title reveal">De tu proceso de ventas a un agente funcionando, en 3 etapas</h2>
+
+      <div class="proc">
+        <div class="step reveal">
+          <div class="num">01</div>
+          <div class="st-body">
+            <h3>Auditoría del proceso comercial <span class="tag">Etapa 1</span></h3>
+            <p>Definimos cómo es tu venta ideal y la volcamos en un documento: conversaciones, escenarios, preguntas frecuentes, objeciones y tareas internas. <b>Todo lo que tu mejor vendedor sabe, escrito.</b></p>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="num">02</div>
+          <div class="st-body">
+            <h3>Planificación del agente <span class="tag">Etapa 2</span></h3>
+            <p>Con esa información diseñamos el agente para que encaje perfecto en tu proceso. <b>No solo automatiza: optimiza y potencia a tu equipo comercial actual.</b></p>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="num">03</div>
+          <div class="st-body">
+            <h3>Implementación con Claude Code <span class="tag">Etapa 3</span></h3>
+            <p>Lo construimos apalancándonos al máximo en Claude Code. <b>Aprendés a pedirle exactamente lo que necesitás</b>, y conseguís el resultado perfecto.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final">
+    <div class="wrap">
+      <div class="final-box reveal">
+        <h2>Tu agente de ventas puede estar listo esta semana</h2>
+        <p>Es un programa 1 a 1: trabajamos sobre tu negocio, a tu ritmo, hasta dejarlo funcionando.</p>
+        <a class="btn btn-primary" data-cta href="#">Quiero acceder al programa 1 a 1 <span class="arw" aria-hidden="true">→</span></a>
+        <div class="final-note">Respondemos personalmente cada solicitud</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-in">
+    <a class="brand" href="#top">
+      <img src="logo.png" alt="TEOTEC" class="brand-logo">
+    </a>
+    <small>© 2026 · Formación 1 a 1 en agentes de IA</small>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     LINK DE TUS BOTONES — cambialo acá una sola vez.
+     Poné tu WhatsApp, tu Calendly o tu formulario. Ejemplos:
+       https://wa.me/5492235555555?text=Quiero%20el%20programa%201%20a%201
+       https://calendly.com/tu-usuario/programa
+     ============================================================ */
+  var CTA_LINK = "https://wa.me/5492235858400?text=Hola!%20Quiero%20acceder%20al%20programa%201%20a%201";
+  document.querySelectorAll("[data-cta]").forEach(function(a){
+    if (CTA_LINK && CTA_LINK !== "#") { a.href = CTA_LINK; a.target = "_blank"; a.rel = "noopener"; }
+  });
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Nav: sólido al scrollear ---------- */
+  var nav = document.getElementById("nav");
+  function onScroll(){ nav.classList.toggle("scrolled", window.scrollY > 24); }
+  onScroll(); window.addEventListener("scroll", onScroll, { passive:true });
+
+  /* ---------- Reveal on scroll ---------- */
+  var reveals = document.querySelectorAll(".reveal");
+  if (reduce || !("IntersectionObserver" in window)) {
+    reveals.forEach(function(el){ el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold:0.14, rootMargin:"0px 0px -8% 0px" });
+    // stagger dentro de cada grupo
+    var groups = [document.querySelector(".hero-copy"), document.querySelector(".feat-grid"), document.querySelector(".proc")];
+    reveals.forEach(function(el){
+      var parent = el.parentElement;
+      if (groups.indexOf(parent) > -1) {
+        var sibs = Array.prototype.filter.call(parent.children, function(c){ return c.classList.contains("reveal"); });
+        el.style.transitionDelay = (sibs.indexOf(el) * 0.09) + "s";
+      }
+      io.observe(el);
+    });
+  }
+
+  /* ---------- Chat demo (elemento estrella) ---------- */
+  var body = document.getElementById("chatBody");
+  var script = [
+    { from:"user", text:"Hola! Tenés la campera de cuero en talle M?" },
+    { from:"bot",  text:"¡Hola! Sí, tengo la campera de cuero en talle M. Sale $89.900.", link:"tienda.com/campera-cuero" },
+    { from:"user", text:"Me la hacés en cuotas?" },
+    { from:"bot",  text:"Sí, 3 cuotas sin interés por la web. ¿Te ayudo a terminar la compra?" }
+  ];
+
+  function bubble(msg){
+    var b = document.createElement("div");
+    b.className = "bubble " + (msg.from === "user" ? "user" : "bot");
+    b.textContent = msg.text;
+    if (msg.link){
+      var l = document.createElement("span");
+      l.className = "lnk"; l.textContent = "🔗 " + msg.link;
+      b.appendChild(l);
+    }
+    body.appendChild(b);
+    body.scrollTop = body.scrollHeight;
+    return b;
+  }
+  function typing(){
+    var t = document.createElement("div");
+    t.className = "typing";
+    t.innerHTML = "<span></span><span></span><span></span>";
+    body.appendChild(t);
+    body.scrollTop = body.scrollHeight;
+    return t;
+  }
+  function clear(){ while(body.firstChild) body.removeChild(body.firstChild); }
+
+  if (reduce){
+    // sin animación: mostrar la conversación completa
+    script.forEach(bubble);
+  } else {
+    var timers = [];
+    function run(){
+      clear();
+      var delay = 500;
+      script.forEach(function(msg){
+        if (msg.from === "bot"){
+          timers.push(setTimeout(function(){ var t = typing();
+            timers.push(setTimeout(function(){ if(t.parentNode) body.removeChild(t); bubble(msg); }, 950));
+          }, delay));
+          delay += 950 + 700;
+        } else {
+          timers.push(setTimeout(function(){ bubble(msg); }, delay));
+          delay += 1100;
+        }
+      });
+      // reiniciar el loop
+      timers.push(setTimeout(run, delay + 3200));
+    }
+    // arrancar cuando el chat entra en viewport (o de una si no hay IO)
+    if ("IntersectionObserver" in window){
+      var started = false;
+      var chatIO = new IntersectionObserver(function(en){
+        en.forEach(function(e){ if(e.isIntersecting && !started){ started = true; run(); chatIO.disconnect(); } });
+      }, { threshold:0.4 });
+      chatIO.observe(document.getElementById("chat"));
+    } else { run(); }
+  }
+})();
+</script>
+</body>
+</html>
