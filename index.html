@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Construí un agente de ventas completo en 7 días · Programa 1 a 1</title>
-<meta name="description" content="Formación 1 a 1 donde armás, paso a paso, un agente de IA que atiende y vende por tu negocio. Al terminar, queda funcionando de verdad.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
+<title>Dejá de perder ventas por mensajes sin responder · TEOTEC</title>
+<meta name="description" content="Automatizá tu atención por WhatsApp, Instagram y Facebook con un agente de IA que responde 24/7 y trabaja como tu mejor vendedor — sin depender de una agencia.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -39,6 +39,7 @@ body{
   font-family:var(--f-body);font-size:17px;line-height:1.6;
   overflow-x:hidden;-webkit-font-smoothing:antialiased;
 }
+body.modal-open{overflow:hidden}
 h1,h2,h3{font-family:var(--f-display);font-weight:600;line-height:1.08;letter-spacing:-.02em;margin:0;overflow-wrap:break-word}
 p{margin:0}
 a{color:inherit;text-decoration:none}
@@ -62,8 +63,6 @@ a{color:inherit;text-decoration:none}
 .nav-in{max-width:var(--maxw);margin:0 auto;padding:16px 26px;display:flex;align-items:center;justify-content:space-between}
 .nav.scrolled{background:rgba(6,9,17,.78);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:11px;font-family:var(--f-display);font-weight:600;font-size:18px;letter-spacing:-.01em}
-.brand .dot{width:26px;height:26px;border-radius:8px;background:var(--grad);box-shadow:0 0 20px rgba(53,214,255,.5);display:grid;place-items:center;flex:none}
-.brand .dot svg{width:15px;height:15px;display:block}
 .brand-logo{height:34px;width:auto;display:block}
 .foot-in .brand-logo{height:28px}
 @media(max-width:560px){.brand-logo{height:28px}}
@@ -75,6 +74,7 @@ a{color:inherit;text-decoration:none}
 .btn-primary{background:var(--grad);color:#04101f;padding:16px 26px;font-size:16.5px;box-shadow:0 8px 30px -6px rgba(46,107,255,.55)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 42px -6px rgba(53,214,255,.6);filter:saturate(1.1)}
 .btn-primary:active{transform:translateY(0)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none;filter:none}
 .btn-primary .arw{transition:transform .2s}
 .btn-primary:hover .arw{transform:translateX(4px)}
 .btn-nav{background:rgba(255,255,255,.06);border:1px solid var(--line-2);color:var(--text)}
@@ -87,8 +87,8 @@ a{color:inherit;text-decoration:none}
 .eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--f-mono);font-size:12.5px;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase;padding:7px 14px;border:1px solid var(--line-2);border-radius:99px;background:var(--glass);margin-bottom:26px}
 .eyebrow .pulse{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 1.8s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.hero h1{font-size:clamp(38px,5.6vw,62px);font-weight:700;margin-bottom:22px}
-.hero .sub{font-size:clamp(17px,1.4vw,20px);color:var(--muted);max-width:33ch;margin-bottom:34px}
+.hero h1{font-size:clamp(32px,4.6vw,52px);font-weight:700;margin-bottom:22px}
+.hero .sub{font-size:clamp(17px,1.4vw,19px);color:var(--muted);max-width:44ch;margin-bottom:34px}
 .hero .sub b{color:var(--text);font-weight:600}
 .hero-cta{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
 .assur{font-family:var(--f-mono);font-size:12.5px;color:var(--muted-2);display:flex;align-items:center;gap:10px}
@@ -121,37 +121,36 @@ a{color:inherit;text-decoration:none}
 /* ===================== SECTION SHELL ===================== */
 .section{position:relative;z-index:1;padding:96px 0}
 .sec-eyebrow{font-family:var(--f-mono);font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px}
-.sec-title{font-size:clamp(28px,3.4vw,42px);font-weight:600;max-width:20ch}
+.sec-title{font-size:clamp(28px,3.4vw,42px);font-weight:600;max-width:22ch}
 .sec-lead{color:var(--muted);font-size:18px;max-width:56ch;margin-top:16px}
 
-/* ===================== FEATURES ===================== */
+/* ===================== CARDS ===================== */
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px}
+.prob-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:52px}
 .card{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:30px 26px;transition:transform .3s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .3s;overflow:hidden}
 .card:hover{transform:translateY(-6px);border-color:rgba(53,214,255,.5);box-shadow:0 22px 50px -24px rgba(46,107,255,.5)}
 .card .ico{width:52px;height:52px;border-radius:14px;background:var(--grad-soft);border:1px solid var(--line-2);display:grid;place-items:center;margin-bottom:20px}
 .card .ico svg{width:26px;height:26px;stroke:var(--cyan)}
 .card h3{font-size:21px;margin-bottom:10px}
 .card p{color:var(--muted);font-size:15.5px}
+.card p.big{font-size:17px;color:#cdd9ef;line-height:1.55}
+.card p b{color:var(--text);font-weight:600}
 .card .glow{position:absolute;top:-40%;right:-30%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(53,214,255,.16),transparent 70%);opacity:0;transition:opacity .3s}
 .card:hover .glow{opacity:1}
 
-/* ===================== PROCESS ===================== */
-.proc{margin-top:56px;display:flex;flex-direction:column;gap:0;position:relative}
-.step{display:grid;grid-template-columns:96px 1fr;gap:28px;padding:30px 0;border-top:1px solid var(--line);transition:background .3s}
-.step:first-child{border-top:none}
-.step .num{font-family:var(--f-display);font-weight:700;font-size:60px;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.85;transition:opacity .3s,transform .3s}
-.step:hover .num{opacity:1;transform:translateX(4px)}
-.step .st-body{padding-top:4px}
-.step h3{font-size:24px;margin-bottom:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.step .tag{font-family:var(--f-mono);font-size:11px;color:var(--cyan);border:1px solid var(--line-2);padding:3px 10px;border-radius:99px;letter-spacing:.06em}
-.step p{color:var(--muted);font-size:16px;max-width:60ch}
-.step p b{color:#cdd9ef;font-weight:600}
+/* ===================== STATEMENT (giro / diferencial) ===================== */
+.statement{font-family:var(--f-display);font-size:clamp(22px,2.8vw,32px);font-weight:600;line-height:1.4;letter-spacing:-.01em;max-width:36ch;margin:0 auto;text-align:center;color:var(--text)}
+.statement .grad{font-weight:700}
+.statement-sec{padding:80px 0}
+
+/* ===================== PLACEHOLDER PRUEBA ===================== */
+.ph-box{border:2px dashed var(--line-2);border-radius:18px;padding:64px 24px;text-align:center;font-family:var(--f-mono);color:var(--muted-2);font-size:15px;letter-spacing:.04em;background:var(--glass);margin-top:52px}
 
 /* ===================== FINAL CTA ===================== */
 .final{position:relative;z-index:1;padding:40px 0 110px}
 .final-box{position:relative;border:1px solid var(--line-2);border-radius:26px;padding:64px 40px;text-align:center;overflow:hidden;background:linear-gradient(180deg,rgba(46,107,255,.10),rgba(53,214,255,.04))}
 .final-box::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 120% at 50% 0%,rgba(53,214,255,.20),transparent 60%);pointer-events:none}
-.final-box h2{position:relative;font-size:clamp(30px,4vw,48px);font-weight:700;max-width:16ch;margin:0 auto 18px}
+.final-box h2{position:relative;font-size:clamp(28px,3.6vw,44px);font-weight:700;max-width:20ch;margin:0 auto 18px}
 .final-box p{position:relative;color:var(--muted);font-size:18px;max-width:52ch;margin:0 auto 34px}
 .final-box .btn-primary{position:relative;font-size:18px;padding:19px 34px}
 .final-note{position:relative;margin-top:18px;font-family:var(--f-mono);font-size:12.5px;color:var(--muted-2)}
@@ -162,6 +161,44 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
 .foot-in .brand{font-size:16px}
 .foot-in small{color:var(--muted-2);font-family:var(--f-mono);font-size:12px}
 
+/* ===================== MODAL / FORM ===================== */
+.modal{position:fixed;inset:0;z-index:100;display:none}
+.modal.open{display:block}
+.modal-backdrop{position:absolute;inset:0;background:rgba(3,5,12,.74);backdrop-filter:blur(7px)}
+.modal-panel{position:relative;z-index:1;max-width:620px;margin:4vh auto;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--line-2);border-radius:22px;box-shadow:0 40px 100px -30px rgba(0,0,0,.9)}
+.modal-scroll{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:38px 34px}
+.modal-x{position:absolute;top:14px;right:14px;z-index:2;width:38px;height:38px;border-radius:50%;border:1px solid var(--line-2);background:rgba(12,20,36,.85);color:var(--muted);font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center;transition:border-color .2s,color .2s}
+.modal-x:hover{border-color:var(--cyan);color:var(--text)}
+.m-title{font-size:26px;margin-bottom:8px}
+.m-sub{color:var(--muted);font-size:15.5px;margin-bottom:28px}
+.q{margin-bottom:24px}
+.q-label{display:block;font-weight:600;font-size:15.5px;line-height:1.45;margin-bottom:11px;color:var(--text)}
+.q-label .qn{color:var(--cyan);font-family:var(--f-mono);font-size:13px;margin-right:7px}
+.opts{display:flex;flex-wrap:wrap;gap:10px}
+.opt{position:relative;display:inline-block}
+.opt input{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0}
+.opt span{display:inline-block;padding:10px 18px;border:1px solid var(--line-2);border-radius:99px;font-size:14.5px;color:var(--muted);background:var(--glass);cursor:pointer;transition:border-color .2s,background .2s,color .2s;user-select:none}
+.opt input:checked+span{background:var(--grad-soft);border-color:var(--cyan);color:var(--text);font-weight:600}
+.opt input:focus-visible+span{outline:2px solid var(--cyan);outline-offset:2px}
+.f-in{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--line-2);border-radius:12px;color:var(--text);font-family:var(--f-body);font-size:15px;padding:12px 14px}
+.f-in::placeholder{color:var(--muted-2)}
+.f-in:focus{outline:none;border-color:var(--cyan);background:rgba(255,255,255,.07)}
+textarea.f-in{resize:vertical;min-height:88px}
+.f-sub{display:none;margin-top:12px}
+.f-sub.show{display:block}
+.f-sub label{display:block;font-size:13.5px;color:var(--muted);margin-bottom:7px}
+.q.invalid .q-label{color:#ff9d9d}
+.q.invalid .f-in{border-color:rgba(255,110,110,.65)}
+.q.invalid .opt span{border-color:rgba(255,110,110,.45)}
+.f-error{background:rgba(255,80,80,.12);border:1px solid rgba(255,110,110,.45);color:#ffc3c3;border-radius:12px;padding:13px 16px;font-size:14.5px;margin-bottom:16px}
+.f-submit{width:100%;margin-top:4px}
+.f-note{text-align:center;font-family:var(--f-mono);font-size:12px;color:var(--muted-2);margin-top:14px}
+.hp-field{position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden}
+.form-ok{text-align:center;padding:46px 8px}
+.form-ok .ok-badge{width:68px;height:68px;border-radius:50%;background:var(--grad);display:grid;place-items:center;margin:0 auto 24px;box-shadow:0 0 44px rgba(53,214,255,.55)}
+.form-ok .ok-badge svg{width:32px;height:32px}
+.form-ok p{font-size:19px;line-height:1.6;color:var(--text);max-width:32ch;margin:0 auto;font-weight:500}
+
 /* ===================== REVEAL ===================== */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
@@ -170,15 +207,15 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
 @media(max-width:940px){
   .hero-grid{grid-template-columns:1fr;gap:44px}
   .hero{padding:130px 0 70px}
-  .hero .sub{max-width:46ch}
+  .hero .sub{max-width:none}
   .chat{margin:0 auto;max-width:420px}
   .feat-grid{grid-template-columns:1fr;gap:16px}
+  .prob-grid{grid-template-columns:1fr;gap:16px}
 }
 @media(max-width:560px){
   body{font-size:16px}
   .section{padding:74px 0}
-  .step{grid-template-columns:1fr;gap:8px;padding:26px 0}
-  .step .num{font-size:46px}
+  .statement-sec{padding:64px 0}
   .final-box{padding:44px 22px}
   .wrap,.nav-in,.foot-in{padding-left:20px;padding-right:20px}
 
@@ -191,13 +228,17 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
   .final-box .btn-primary{font-size:17px}
 
   /* títulos: nunca desbordar */
-  .hero h1{font-size:clamp(30px,8.4vw,40px)}
-  .hero .sub{max-width:none}
+  .hero h1{font-size:clamp(27px,7.6vw,36px)}
   .sec-title,.final-box h2{max-width:none}
+
+  /* modal full-screen en mobile */
+  .modal-panel{margin:0;max-height:100dvh;height:100dvh;border-radius:0}
+  .modal-scroll{padding:26px 20px 40px}
+  .m-title{font-size:22px;padding-right:44px}
 }
 @media(max-width:360px){
   .wrap,.nav-in,.foot-in{padding-left:16px;padding-right:16px}
-  .hero h1{font-size:29px}
+  .hero h1{font-size:26px}
 }
 
 /* ===================== REDUCED MOTION ===================== */
@@ -225,7 +266,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
     <a class="brand" href="#top" aria-label="TEOTEC — Inicio">
       <img src="logo.png" alt="TEOTEC" class="brand-logo">
     </a>
-    <a class="btn btn-nav" data-cta href="#">Programa 1 a 1</a>
+    <button class="btn btn-nav" data-apply type="button">Aplicá ahora</button>
   </div>
 </header>
 
@@ -235,11 +276,11 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <span class="eyebrow reveal"><span class="pulse"></span>Formación 1 a 1 · Agentes de IA</span>
-        <h1 class="reveal">Construí un agente de ventas completo en <span class="grad">7 días</span></h1>
-        <p class="sub reveal">Una formación 1 a 1 donde armás, paso a paso, un agente de IA que atiende y vende por tu negocio. <b>Al terminar queda funcionando de verdad</b> — no es una demo.</p>
+        <span class="eyebrow reveal"><span class="pulse"></span>Para negocios que venden por chat</span>
+        <h1 class="reveal">Tu negocio <span class="grad">pierde ventas</span> cada vez que un mensaje queda sin responder.</h1>
+        <p class="sub reveal">Automatizá tu atención por WhatsApp, Instagram y Facebook con un agente de IA que responde 24/7, aprovecha cada lead de tus campañas y trabaja como tu mejor vendedor — <b>sin que dependas de una agencia para tocarlo</b>.</p>
         <div class="hero-cta reveal">
-          <a class="btn btn-primary" data-cta href="#">Quiero acceder al programa 1 a 1 <span class="arw" aria-hidden="true">→</span></a>
+          <button class="btn btn-primary" data-apply type="button">Aplicá para trabajar conmigo <span class="arw" aria-hidden="true">→</span></button>
           <span class="assur">Cupos limitados <span class="sep"></span> Acompañamiento personalizado</span>
         </div>
       </div>
@@ -264,68 +305,89 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
     </div>
   </section>
 
-  <!-- FEATURES -->
-  <section class="section" id="agente">
+  <!-- PROBLEMA -->
+  <section class="section" id="problema">
     <div class="wrap">
-      <p class="sec-eyebrow reveal">Lo que va a hacer tu agente</p>
-      <h2 class="sec-title reveal">Un vendedor que no duerme, no se distrae y no pierde una oportunidad</h2>
+      <p class="sec-eyebrow reveal">El problema</p>
+      <h2 class="sec-title reveal">Si vendés por chat, esto ya te está pasando:</h2>
 
-      <div class="feat-grid">
+      <div class="prob-grid">
         <article class="card reveal">
           <div class="glow"></div>
-          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-1.2 4.4c-.8 1.3-3.9 3.1-8.3 3.1-1 0-2-.1-2.9-.3L3 20l1.4-4.1A8.5 8.5 0 0 1 3.5 8C4.8 4.6 8.3 3 12 3s7.2 1.7 8.5 5.1c.3.8.5 1.6.5 2.4Z"/></svg></div>
-          <h3>Vende por chat, solo</h3>
-          <p>Responde consultas, asesora y lleva al cliente hasta la compra con datos reales de tu negocio. Sin inventar precios ni stock.</p>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-1.2 4.4c-.8 1.3-3.9 3.1-8.3 3.1-1 0-2-.1-2.9-.3L3 20l1.4-4.1A8.5 8.5 0 0 1 3.5 8C4.8 4.6 8.3 3 12 3s7.2 1.7 8.5 5.1c.3.8.5 1.6.5 2.4Z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" stroke-width="2.4"/></svg></div>
+          <p class="big">Llegan más mensajes de los que podés contestar, y algunos <b>quedan sin respuesta</b>.</p>
         </article>
 
         <article class="card reveal">
           <div class="glow"></div>
-          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></svg></div>
-          <h3>Filtra las consultas basura</h3>
-          <p>Atiende cada primer contacto, descarta a los que solo están mirando y le pasa a tu equipo únicamente las conversaciones que valen la pena cerrar.</p>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2.5"/></svg></div>
+          <p class="big">Un lead pregunta a las 11 de la noche, le respondés a la mañana, y <b>ya compró en otro lado</b>.</p>
+        </article>
+
+        <article class="card reveal">
+          <div class="glow"></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 3 5.5-6.5"/><path d="M17 8h3.5v3.5"/><path d="M3 21h18"/></svg></div>
+          <p class="big">Invertís en publicidad, entran decenas de consultas… y no tenés estructura para atenderlas todas. <b>Plata a la basura</b>.</p>
         </article>
 
         <article class="card reveal">
           <div class="glow"></div>
           <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.2a3.2 3.2 0 0 1 0 5.6M18 13.6a5.5 5.5 0 0 1 3 5.4"/></svg></div>
-          <h3>Cientos de chats a la vez</h3>
-          <p>Habla con miles de personas en simultáneo. Ninguna consulta queda sin respuesta, ni a las 3 de la mañana.</p>
+          <p class="big">Contratás gente para atender, pero es <b>caro, rota</b>, y hay que entrenarla de nuevo cada vez.</p>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- PROCESS -->
-  <section class="section" id="proceso">
+  <!-- GIRO -->
+  <section class="section statement-sec" id="giro">
     <div class="wrap">
-      <p class="sec-eyebrow reveal">Cómo lo construimos</p>
-      <h2 class="sec-title reveal">De tu proceso de ventas a un agente funcionando, en 3 etapas</h2>
+      <p class="statement reveal">El problema no es que necesites más gente contestando. Es que necesitás <span class="grad">un sistema que atienda por vos</span> — uno que puedas entender y ajustar vos mismo, sin quedar atado a una agencia que te cobra por cada cambio.</p>
+    </div>
+  </section>
 
-      <div class="proc">
-        <div class="step reveal">
-          <div class="num">01</div>
-          <div class="st-body">
-            <h3>Auditoría del proceso comercial <span class="tag">Etapa 1</span></h3>
-            <p>Definimos cómo es tu venta ideal y la volcamos en un documento: conversaciones, escenarios, preguntas frecuentes, objeciones y tareas internas. <b>Todo lo que tu mejor vendedor sabe, escrito.</b></p>
-          </div>
-        </div>
+  <!-- QUÉ VAS A LOGRAR -->
+  <section class="section" id="logros">
+    <div class="wrap">
+      <p class="sec-eyebrow reveal">Qué vas a lograr</p>
+      <h2 class="sec-title reveal">Tu atención resuelta, tu inversión rindiendo, tu sistema en tus manos</h2>
 
-        <div class="step reveal">
-          <div class="num">02</div>
-          <div class="st-body">
-            <h3>Planificación del agente <span class="tag">Etapa 2</span></h3>
-            <p>Con esa información diseñamos el agente para que encaje perfecto en tu proceso. <b>No solo automatiza: optimiza y potencia a tu equipo comercial actual.</b></p>
-          </div>
-        </div>
+      <div class="feat-grid">
+        <article class="card reveal">
+          <div class="glow"></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13.5H11L9.5 22 19 9.5h-6.5L13 2Z"/></svg></div>
+          <p class="big">Un agente de IA que responde <b>al instante, 24/7</b>, en tu tono y con la info de tu negocio.</p>
+        </article>
 
-        <div class="step reveal">
-          <div class="num">03</div>
-          <div class="st-body">
-            <h3>Implementación con Claude Code <span class="tag">Etapa 3</span></h3>
-            <p>Lo construimos apalancándonos al máximo en Claude Code. <b>Aprendés a pedirle exactamente lo que necesitás</b>, y conseguís el resultado perfecto.</p>
-          </div>
-        </div>
+        <article class="card reveal">
+          <div class="glow"></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.8"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg></div>
+          <p class="big">Cada lead de tus campañas <b>atendido en el momento</b> — que la inversión en ads rinda de verdad.</p>
+        </article>
+
+        <article class="card reveal">
+          <div class="glow"></div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6.5v5c0 4.4 3 7.6 7 9 4-1.4 7-4.6 7-9v-5l-7-3Z"/><path d="m9.2 12 2 2 3.8-4"/></svg></div>
+          <p class="big">Vos <b>entendiendo cómo funciona tu propio sistema</b>, para mejorarlo sin depender de nadie.</p>
+        </article>
       </div>
+    </div>
+  </section>
+
+  <!-- DIFERENCIAL -->
+  <section class="section statement-sec" id="diferencial">
+    <div class="wrap">
+      <p class="sec-eyebrow reveal" style="text-align:center">La diferencia</p>
+      <p class="statement reveal">Esto no es una agencia que te construye una caja negra que no podés tocar. Es un acompañamiento donde vos aprendés a manejar tu propio sistema. Al terminar, no me necesitás a mí ni a nadie: <span class="grad">el negocio y el control quedan en tus manos</span>.</p>
+    </div>
+  </section>
+
+  <!-- PRUEBA -->
+  <section class="section" id="prueba">
+    <div class="wrap">
+      <p class="sec-eyebrow reveal">Resultados</p>
+      <h2 class="sec-title reveal">Mirá cómo funciona en un negocio real</h2>
+      <div class="ph-box reveal">[COMPLETAR: caso/demo real]</div>
     </div>
   </section>
 
@@ -333,10 +395,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
   <section class="final">
     <div class="wrap">
       <div class="final-box reveal">
-        <h2>Tu agente de ventas puede estar listo esta semana</h2>
-        <p>Es un programa 1 a 1: trabajamos sobre tu negocio, a tu ritmo, hasta dejarlo funcionando.</p>
-        <a class="btn btn-primary" data-cta href="#">Quiero acceder al programa 1 a 1 <span class="arw" aria-hidden="true">→</span></a>
-        <div class="final-note">Respondemos personalmente cada solicitud</div>
+        <h2>Trabajo con un cupo limitado de negocios por vez.</h2>
+        <p>Si tenés un negocio que vende por chat y querés dejar de perder ventas, aplicá abajo. Reviso cada aplicación personalmente.</p>
+        <button class="btn btn-primary" data-apply type="button">Aplicá ahora <span class="arw" aria-hidden="true">→</span></button>
+        <div class="final-note">Respuesta en menos de 24 horas</div>
       </div>
     </div>
   </section>
@@ -348,24 +410,106 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
     <a class="brand" href="#top">
       <img src="logo.png" alt="TEOTEC" class="brand-logo">
     </a>
-    <small>© 2026 · Formación 1 a 1 en agentes de IA</small>
+    <small>© 2026 TEOTEC · Automatización de ventas con IA</small>
   </div>
 </footer>
+
+<!-- ===================== MODAL: FORMULARIO DE APLICACIÓN ===================== -->
+<div class="modal" id="applyModal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <button class="modal-x" data-close type="button" aria-label="Cerrar">✕</button>
+
+    <div class="modal-scroll" id="modalScroll">
+    <div id="formWrap">
+      <h3 class="m-title" id="mTitle">Aplicá al programa</h3>
+      <p class="m-sub">Contame de tu negocio. Reviso cada aplicación personalmente.</p>
+
+      <form id="applyForm" novalidate>
+
+        <div class="q" data-q="tiene_negocio">
+          <span class="q-label"><span class="qn">01</span>¿Tenés un negocio en funcionamiento actualmente?</span>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="tiene_negocio" value="Sí"><span>Sí</span></label>
+            <label class="opt"><input type="radio" name="tiene_negocio" value="No"><span>No</span></label>
+          </div>
+        </div>
+
+        <div class="q" data-q="que_vende_canales">
+          <label class="q-label" for="fQueVende"><span class="qn">02</span>¿Qué vendés y por qué canales?</label>
+          <textarea class="f-in" id="fQueVende" name="que_vende_canales" placeholder="Ej: indumentaria, por WhatsApp e Instagram…"></textarea>
+        </div>
+
+        <div class="q" data-q="consultas_dia">
+          <span class="q-label"><span class="qn">03</span>¿Cuántos mensajes/consultas recibís por día aprox.?</span>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="consultas_dia" value="Menos de 10"><span>Menos de 10</span></label>
+            <label class="opt"><input type="radio" name="consultas_dia" value="10-50"><span>10-50</span></label>
+            <label class="opt"><input type="radio" name="consultas_dia" value="50-100"><span>50-100</span></label>
+            <label class="opt"><input type="radio" name="consultas_dia" value="Más de 100"><span>Más de 100</span></label>
+          </div>
+        </div>
+
+        <div class="q" data-q="invierte_ads">
+          <span class="q-label"><span class="qn">04</span>¿Invertís hoy en publicidad para traer clientes?</span>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="invierte_ads" value="Sí"><span>Sí</span></label>
+            <label class="opt"><input type="radio" name="invierte_ads" value="No"><span>No</span></label>
+          </div>
+          <div class="f-sub" id="montoWrap">
+            <label for="fMonto">¿Cuánto invertís por mes, aprox.?</label>
+            <input class="f-in" id="fMonto" name="monto_ads_mensual" type="text" inputmode="decimal" placeholder="Ej: USD 300 / $400.000">
+          </div>
+        </div>
+
+        <div class="q" data-q="objetivo">
+          <label class="q-label" for="fObjetivo"><span class="qn">05</span>¿Qué es lo que más te gustaría resolver con esto?</label>
+          <textarea class="f-in" id="fObjetivo" name="objetivo" placeholder="Contame tu principal problema o objetivo…"></textarea>
+        </div>
+
+        <div class="q" data-q="puede_invertir_997">
+          <span class="q-label"><span class="qn">06</span>Este programa es una inversión de USD 997. ¿Estás en posición de invertir eso si te muestro que tiene sentido para tu negocio?</span>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="puede_invertir_997" value="Sí"><span>Sí</span></label>
+            <label class="opt"><input type="radio" name="puede_invertir_997" value="No"><span>No</span></label>
+          </div>
+        </div>
+
+        <div class="q" data-q="whatsapp">
+          <label class="q-label" for="fWsp"><span class="qn">07</span>Tu WhatsApp de contacto <span style="color:var(--cyan)">*</span></label>
+          <input class="f-in" id="fWsp" name="whatsapp" type="tel" placeholder="Ej: +54 9 223 585-8400" autocomplete="tel">
+        </div>
+
+        <!-- honeypot anti-spam: oculto para humanos (si un bot lo llena, el envío se marca como posible spam pero NUNCA se pierde) -->
+        <div class="hp-field" aria-hidden="true">
+          <label>Dejar vacío<input type="text" name="nota_extra_hp" tabindex="-1" autocomplete="off"></label>
+        </div>
+
+        <div class="f-error" id="formError" hidden></div>
+
+        <button class="btn btn-primary f-submit" id="submitBtn" type="submit">Enviar aplicación <span class="arw" aria-hidden="true">→</span></button>
+        <p class="f-note">Tus datos solo se usan para contactarte por tu aplicación.</p>
+      </form>
+    </div>
+
+    <div class="form-ok" id="formOk" hidden>
+      <div class="ok-badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="#04121f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <p>¡Gracias por tu interés! Mateo personalmente va a contactarte por WhatsApp en las próximas 24 horas.</p>
+    </div>
+    </div>
+  </div>
+</div>
 
 <script>
 (function(){
   "use strict";
 
   /* ============================================================
-     LINK DE TUS BOTONES — cambialo acá una sola vez.
-     Poné tu WhatsApp, tu Calendly o tu formulario. Ejemplos:
-       https://wa.me/5492235555555?text=Quiero%20el%20programa%201%20a%201
-       https://calendly.com/tu-usuario/programa
+     WEBHOOK DEL FORMULARIO (workflow "TEOTEC - Leads Landing" en N8N)
      ============================================================ */
-  var CTA_LINK = "https://wa.me/5492235858400?text=Hola!%20Quiero%20acceder%20al%20programa%201%20a%201";
-  document.querySelectorAll("[data-cta]").forEach(function(a){
-    if (CTA_LINK && CTA_LINK !== "#") { a.href = CTA_LINK; a.target = "_blank"; a.rel = "noopener"; }
-  });
+  var WEBHOOK_URL = "https://n8n.teotec.org/webhook/teotec-lead";
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -384,8 +528,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
         if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
       });
     }, { threshold:0.14, rootMargin:"0px 0px -8% 0px" });
-    // stagger dentro de cada grupo
-    var groups = [document.querySelector(".hero-copy"), document.querySelector(".feat-grid"), document.querySelector(".proc")];
+    var groups = [document.querySelector(".hero-copy"), document.querySelector(".prob-grid"), document.querySelector(".feat-grid")];
     reveals.forEach(function(el){
       var parent = el.parentElement;
       if (groups.indexOf(parent) > -1) {
@@ -396,7 +539,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
     });
   }
 
-  /* ---------- Chat demo (elemento estrella) ---------- */
+  /* ---------- Chat demo ---------- */
   var body = document.getElementById("chatBody");
   var script = [
     { from:"user", text:"Hola! Tenés la campera de cuero en talle M?" },
@@ -426,15 +569,14 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
     body.scrollTop = body.scrollHeight;
     return t;
   }
-  function clear(){ while(body.firstChild) body.removeChild(body.firstChild); }
+  function clearChat(){ while(body.firstChild) body.removeChild(body.firstChild); }
 
   if (reduce){
-    // sin animación: mostrar la conversación completa
     script.forEach(bubble);
   } else {
     var timers = [];
     function run(){
-      clear();
+      clearChat();
       var delay = 500;
       script.forEach(function(msg){
         if (msg.from === "bot"){
@@ -447,10 +589,8 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
           delay += 1100;
         }
       });
-      // reiniciar el loop
       timers.push(setTimeout(run, delay + 3200));
     }
-    // arrancar cuando el chat entra en viewport (o de una si no hay IO)
     if ("IntersectionObserver" in window){
       var started = false;
       var chatIO = new IntersectionObserver(function(en){
@@ -459,6 +599,176 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
       chatIO.observe(document.getElementById("chat"));
     } else { run(); }
   }
+
+  /* ============================================================
+     MODAL + FORMULARIO DE APLICACIÓN
+     ============================================================ */
+  var modal    = document.getElementById("applyModal");
+  var panel    = modal.querySelector(".modal-panel");
+  var scroller = document.getElementById("modalScroll");
+  var form     = document.getElementById("applyForm");
+  var formWrap = document.getElementById("formWrap");
+  var formOk   = document.getElementById("formOk");
+  var errBox   = document.getElementById("formError");
+  var btn      = document.getElementById("submitBtn");
+  var sending  = false;
+  var sent     = false;
+  var lastFocus = null;
+
+  function openModal(){
+    lastFocus = document.activeElement;
+    modal.classList.add("open");
+    document.body.classList.add("modal-open");
+    scroller.scrollTop = 0;
+    syncMonto();
+    var first = sent ? modal.querySelector(".modal-x") : form.querySelector("input,textarea,button");
+    if (first) setTimeout(function(){ try{ first.focus({preventScroll:true}); }catch(e){} }, 60);
+  }
+  function closeModal(){
+    modal.classList.remove("open");
+    document.body.classList.remove("modal-open");
+    if (lastFocus && lastFocus.focus){ try{ lastFocus.focus({preventScroll:true}); }catch(e){} }
+  }
+
+  document.querySelectorAll("[data-apply]").forEach(function(b){
+    b.addEventListener("click", function(ev){ ev.preventDefault(); openModal(); });
+  });
+  modal.querySelectorAll("[data-close]").forEach(function(b){
+    b.addEventListener("click", function(){ if (sending) return; closeModal(); });
+  });
+  document.addEventListener("keydown", function(e){
+    if (!modal.classList.contains("open")) return;
+    if (e.key === "Escape" && !sending){ closeModal(); return; }
+    /* focus trap: Tab queda dentro del modal */
+    if (e.key === "Tab"){
+      var focusables = Array.prototype.filter.call(
+        panel.querySelectorAll('button,[href],input,select,textarea'),
+        function(el){ return !el.disabled && el.offsetParent !== null && el.tabIndex !== -1; }
+      );
+      if (!focusables.length) return;
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      if (e.shiftKey && (document.activeElement === first || !panel.contains(document.activeElement))){
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && (document.activeElement === last || !panel.contains(document.activeElement))){
+        e.preventDefault(); first.focus();
+      }
+    }
+  });
+
+  /* pregunta 4: campo de monto condicional (sincronizado también con
+     valores restaurados por el navegador al recargar/volver atrás) */
+  var montoWrap = document.getElementById("montoWrap");
+  function syncMonto(){
+    var checked = form.querySelector('input[name="invierte_ads"]:checked');
+    montoWrap.classList.toggle("show", !!checked && checked.value === "Sí");
+  }
+  form.querySelectorAll('input[name="invierte_ads"]').forEach(function(r){
+    r.addEventListener("change", syncMonto);
+  });
+  syncMonto();
+  window.addEventListener("pageshow", syncMonto);
+
+  /* validación */
+  function val(name){
+    var el = form.elements[name];
+    if (!el) return "";
+    if (el.length !== undefined && el.tagName === undefined){ // RadioNodeList
+      return el.value || "";
+    }
+    return (el.value || "").trim();
+  }
+  function markInvalid(qName, invalid){
+    var q = form.querySelector('.q[data-q="'+qName+'"]');
+    if (q) q.classList.toggle("invalid", invalid);
+    return invalid;
+  }
+  function validate(){
+    var missing = [];
+    [["tiene_negocio","la pregunta 1"],
+     ["que_vende_canales","la pregunta 2"],
+     ["consultas_dia","la pregunta 3"],
+     ["invierte_ads","la pregunta 4"],
+     ["objetivo","la pregunta 5"],
+     ["puede_invertir_997","la pregunta 6"],
+     ["whatsapp","tu WhatsApp"]].forEach(function(pair){
+      var bad = val(pair[0]) === "";
+      if (markInvalid(pair[0], bad)) missing.push(pair[1]);
+    });
+    /* WhatsApp: mínimo razonable de dígitos */
+    if (val("whatsapp") !== ""){
+      var digits = val("whatsapp").replace(/\D/g, "");
+      if (digits.length < 8){ markInvalid("whatsapp", true); if (missing.indexOf("tu WhatsApp") === -1) missing.push("un WhatsApp válido"); }
+    }
+    return missing;
+  }
+  function showError(msg){
+    errBox.textContent = msg;
+    errBox.hidden = false;
+  }
+  function hideError(){ errBox.hidden = true; }
+
+  form.addEventListener("submit", function(ev){
+    ev.preventDefault();
+    if (sending || sent) return;
+    hideError();
+
+    var missing = validate();
+    if (missing.length){
+      showError("Te falta completar: " + missing.join(", ") + ".");
+      var firstBad = form.querySelector(".q.invalid");
+      if (firstBad) firstBad.scrollIntoView({ block:"center", behavior: reduce ? "auto" : "smooth" });
+      return;
+    }
+
+    var payload = {
+      tiene_negocio:       val("tiene_negocio"),
+      que_vende_canales:   val("que_vende_canales"),
+      consultas_dia:       val("consultas_dia"),
+      invierte_ads:        val("invierte_ads"),
+      monto_ads_mensual:   val("invierte_ads") === "Sí" ? (val("monto_ads_mensual") || "No especificado") : "-",
+      objetivo:            val("objetivo"),
+      puede_invertir_997:  val("puede_invertir_997"),
+      whatsapp:            val("whatsapp"),
+      origen:              "landing teotec.org",
+      /* honeypot: si está lleno se marca como posible spam, pero el envío
+         nunca se descarta (evita perder leads por autofill accidental) */
+      posible_spam:        val("nota_extra_hp") !== "" ? "sí" : "no"
+    };
+
+    sending = true;
+    btn.disabled = true;
+    var btnHTML = btn.innerHTML;
+    btn.textContent = "Enviando…";
+
+    var ctrl = ("AbortController" in window) ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, 20000) : null;
+
+    fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function(res){
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.json().catch(function(){ return {}; });
+    }).then(function(data){
+      /* contrato estricto: el workflow responde { success: true }.
+         Cualquier otra cosa (incluso 200 vacío) se trata como fallo. */
+      if (!data || data.success !== true) throw new Error("respuesta inválida");
+      /* éxito: ocultar formulario, mostrar confirmación */
+      formWrap.hidden = true;
+      formOk.hidden = false;
+      sent = true;
+      scroller.scrollTop = 0;
+    }).catch(function(){
+      showError("No pudimos enviar tu aplicación. Revisá tu conexión e intentá de nuevo.");
+    }).finally(function(){
+      if (timer) clearTimeout(timer);
+      sending = false;
+      btn.disabled = false;
+      btn.innerHTML = btnHTML;
+    });
+  });
 })();
 </script>
 </body>
