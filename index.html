@@ -689,7 +689,6 @@ textarea.f-in{resize:vertical;min-height:88px}
     }
   }
   function closeModal(){
-    cancelAuto();
     modal.classList.remove("open");
     document.body.classList.remove("modal-open");
     if (lastFocus && lastFocus.focus){ try{ lastFocus.focus({preventScroll:true}); }catch(e){} }
@@ -775,7 +774,6 @@ textarea.f-in{resize:vertical;min-height:88px}
   });
 
   function renderStep(){
-    cancelAuto();
     /* limpiar marcas de error de pasos anteriores */
     form.querySelectorAll(".q.invalid").forEach(function(q){ q.classList.remove("invalid"); });
     wspConfirm.classList.remove("bad");
@@ -844,25 +842,12 @@ textarea.f-in{resize:vertical;min-height:88px}
   }
   backBtn.addEventListener("click", goBack);
 
-  /* Auto-avance al tocar una opción. Sólo con el dedo/mouse: si avanzáramos
-     también con las flechas del teclado, el usuario quedaría registrado con
-     una opción que sólo estaba recorriendo para leerla. */
-  var autoTimer = null;
-  var lastPointer = 0;
-  function cancelAuto(){ if (autoTimer){ clearTimeout(autoTimer); autoTimer = null; } }
-  document.addEventListener("pointerdown", function(){ lastPointer = new Date().getTime(); }, true);
-
+  /* Al elegir una opción sólo se limpia el error: para avanzar siempre
+     hay que tocar "Siguiente", igual que en las preguntas de texto. */
   form.querySelectorAll('.wstep .opt input[type="radio"]').forEach(function(r){
     r.addEventListener("change", function(){
-      cancelAuto();                                              // una respuesta nueva anula la anterior
-      var st = steps[idx];
-      if (!st || st.getAttribute("data-field") !== r.name) return;
-      if (r.name === "invierte_ads" && r.value === "Sí") return;  // primero el monto
-      if (new Date().getTime() - lastPointer > 700) return;       // vino del teclado: no avanzar solo
-      autoTimer = setTimeout(function(){
-        autoTimer = null;
-        if (steps[idx] === st && !sending && !sent) goNext();
-      }, reduce ? 0 : 330);
+      markInvalid(r.name, false);
+      hideError();
     });
   });
 
