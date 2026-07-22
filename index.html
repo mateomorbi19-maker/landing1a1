@@ -33,6 +33,7 @@
   --maxw:1180px;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
   margin:0;background:var(--void);color:var(--text);
@@ -40,7 +41,7 @@ body{
   overflow-x:hidden;-webkit-font-smoothing:antialiased;
 }
 body.modal-open{overflow:hidden}
-h1,h2,h3{font-family:var(--f-display);font-weight:600;line-height:1.08;letter-spacing:-.02em;margin:0;overflow-wrap:break-word}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:600;line-height:1.08;letter-spacing:-.02em;margin:0;overflow-wrap:break-word}
 p{margin:0}
 a{color:inherit;text-decoration:none}
 ::selection{background:rgba(53,214,255,.28);color:#fff}
@@ -167,7 +168,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
 .modal.open{display:block}
 .modal-backdrop{position:absolute;inset:0;background:rgba(3,5,12,.74);backdrop-filter:blur(7px)}
 .modal-panel{position:relative;z-index:1;max-width:620px;margin:4vh auto;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--line-2);border-radius:22px;box-shadow:0 40px 100px -30px rgba(0,0,0,.9)}
-.modal-scroll{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:38px 34px}
+.modal-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:38px 34px}
 .modal-x{position:absolute;top:14px;right:14px;z-index:2;width:38px;height:38px;border-radius:50%;border:1px solid var(--line-2);background:rgba(12,20,36,.85);color:var(--muted);font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center;transition:border-color .2s,color .2s}
 .modal-x:hover{border-color:var(--cyan);color:var(--text)}
 .m-title{font-size:26px;margin-bottom:8px}
@@ -184,6 +185,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
 .f-in{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--line-2);border-radius:12px;color:var(--text);font-family:var(--f-body);font-size:15px;padding:12px 14px}
 .f-in::placeholder{color:var(--muted-2)}
 .f-in:focus{outline:none;border-color:var(--cyan);background:rgba(255,255,255,.07)}
+.f-in.bad{border-color:rgba(255,110,110,.65)}
 textarea.f-in{resize:vertical;min-height:88px}
 .f-sub{display:none;margin-top:12px}
 .f-sub.show{display:block}
@@ -194,6 +196,33 @@ textarea.f-in{resize:vertical;min-height:88px}
 .f-error{background:rgba(255,80,80,.12);border:1px solid rgba(255,110,110,.45);color:#ffc3c3;border-radius:12px;padding:13px 16px;font-size:14.5px;margin-bottom:16px}
 .f-submit{width:100%;margin-top:4px}
 .f-note{text-align:center;font-family:var(--f-mono);font-size:12px;color:var(--muted-2);margin-top:14px}
+
+/* ---------- WIZARD: una pregunta por pantalla ---------- */
+.wiz-head{margin-bottom:26px}
+.wiz-count{display:flex;justify-content:space-between;align-items:center;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+.wiz-count .of{color:var(--muted-2)}
+.wiz-bar{height:4px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.wiz-bar i{display:block;height:100%;width:0;border-radius:99px;background:var(--grad);transition:width .38s cubic-bezier(.2,.7,.2,1)}
+.wstep{display:none}
+.wstep.active{display:block;animation:stepIn .34s cubic-bezier(.2,.7,.2,1)}
+@keyframes stepIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.wstep .q{margin-bottom:0}
+.wstep .q-label{font-size:20px;line-height:1.38;margin-bottom:18px;font-family:var(--f-display);font-weight:600;letter-spacing:-.01em}
+.wiz-nav{display:flex;gap:12px;align-items:stretch;margin-top:28px}
+.btn-back{background:rgba(255,255,255,.05);border:1px solid var(--line-2);color:var(--muted);padding:16px 20px;font-size:15px;flex:none}
+.btn-back:hover:not(:disabled){border-color:var(--blue-bright);color:var(--text);background:rgba(46,107,255,.12)}
+.btn-back:disabled{opacity:.5;cursor:not-allowed}
+.wiz-next{flex:1}
+/* pantalla de confirmación del WhatsApp */
+.cf-ico{width:60px;height:60px;border-radius:50%;background:var(--grad-soft);border:1px solid var(--line-2);display:grid;place-items:center;margin-bottom:20px}
+.cf-ico svg{width:30px;height:30px;stroke:var(--cyan)}
+.cf-title{font-size:22px;margin-bottom:10px}
+.cf-text{color:var(--muted);font-size:15.5px;margin-bottom:22px}
+.cf-box{background:rgba(46,107,255,.09);border:1px solid var(--line-2);border-radius:14px;padding:18px}
+.cf-box label{display:block;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:9px}
+.cf-box .f-in{font-size:19px;font-weight:600;letter-spacing:.02em;text-align:center;padding:14px}
+.cf-hint{font-size:13.5px;color:var(--muted);margin-top:10px;text-align:center}
+.cf-title:focus{outline:none}
 .hp-field{position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden}
 .form-ok{text-align:center;padding:46px 8px}
 .form-ok .ok-badge{width:68px;height:68px;border-radius:50%;background:var(--grad);display:grid;place-items:center;margin:0 auto 24px;box-shadow:0 0 44px rgba(53,214,255,.55)}
@@ -227,6 +256,9 @@ textarea.f-in{resize:vertical;min-height:88px}
   .final-box .btn-primary{width:100%}
   .hero-cta .assur{justify-content:center;text-align:center;flex-wrap:wrap;row-gap:4px}
   .final-box .btn-primary{font-size:17px}
+
+  /* la píldora del hero entra en una sola línea */
+  .eyebrow{font-size:11px;letter-spacing:.07em;padding:7px 12px}
 
   /* títulos: nunca desbordar */
   .hero h1{font-size:clamp(27px,7.6vw,36px)}
@@ -416,59 +448,92 @@ textarea.f-in{resize:vertical;min-height:88px}
       <h3 class="m-title" id="mTitle">Aplicá al programa</h3>
       <p class="m-sub">Contame de tu negocio. Reviso cada aplicación personalmente.</p>
 
+      <div class="wiz-head">
+        <div class="wiz-count"><span id="wizLabel">Pregunta 1</span><span class="of" id="wizOf">de 7</span></div>
+        <div class="wiz-bar"><i id="wizBar"></i></div>
+      </div>
+
       <form id="applyForm" novalidate>
 
-        <div class="q" data-q="tiene_negocio">
-          <span class="q-label"><span class="qn">01</span>¿Tenés un negocio en funcionamiento actualmente?</span>
-          <div class="opts">
-            <label class="opt"><input type="radio" name="tiene_negocio" value="Sí"><span>Sí</span></label>
-            <label class="opt"><input type="radio" name="tiene_negocio" value="No"><span>No</span></label>
+        <div class="wstep" data-field="tiene_negocio">
+          <div class="q" data-q="tiene_negocio">
+            <span class="q-label" id="lblNegocio">¿Tenés un negocio en funcionamiento actualmente?</span>
+            <div class="opts" role="radiogroup" aria-labelledby="lblNegocio">
+              <label class="opt"><input type="radio" name="tiene_negocio" value="Sí"><span>Sí</span></label>
+              <label class="opt"><input type="radio" name="tiene_negocio" value="No"><span>No</span></label>
+            </div>
           </div>
         </div>
 
-        <div class="q" data-q="que_vende_canales">
-          <label class="q-label" for="fQueVende"><span class="qn">02</span>¿Qué vendés y por qué canales?</label>
-          <textarea class="f-in" id="fQueVende" name="que_vende_canales" placeholder="Ej: indumentaria, por WhatsApp e Instagram…"></textarea>
-        </div>
-
-        <div class="q" data-q="consultas_dia">
-          <span class="q-label"><span class="qn">03</span>¿Cuántos mensajes/consultas recibís por día aprox.?</span>
-          <div class="opts">
-            <label class="opt"><input type="radio" name="consultas_dia" value="Menos de 10"><span>Menos de 10</span></label>
-            <label class="opt"><input type="radio" name="consultas_dia" value="10-50"><span>10-50</span></label>
-            <label class="opt"><input type="radio" name="consultas_dia" value="50-100"><span>50-100</span></label>
-            <label class="opt"><input type="radio" name="consultas_dia" value="Más de 100"><span>Más de 100</span></label>
+        <div class="wstep" data-field="que_vende_canales">
+          <div class="q" data-q="que_vende_canales">
+            <label class="q-label" for="fQueVende">¿Qué vendés y por qué canales?</label>
+            <textarea class="f-in" id="fQueVende" name="que_vende_canales" placeholder="Ej: indumentaria, por WhatsApp e Instagram…"></textarea>
           </div>
         </div>
 
-        <div class="q" data-q="invierte_ads">
-          <span class="q-label"><span class="qn">04</span>¿Invertís hoy en publicidad para traer clientes?</span>
-          <div class="opts">
-            <label class="opt"><input type="radio" name="invierte_ads" value="Sí"><span>Sí</span></label>
-            <label class="opt"><input type="radio" name="invierte_ads" value="No"><span>No</span></label>
-          </div>
-          <div class="f-sub" id="montoWrap">
-            <label for="fMonto">¿Cuánto invertís por mes, aprox.?</label>
-            <input class="f-in" id="fMonto" name="monto_ads_mensual" type="text" inputmode="decimal" placeholder="Ej: USD 300 / $400.000">
-          </div>
-        </div>
-
-        <div class="q" data-q="objetivo">
-          <label class="q-label" for="fObjetivo"><span class="qn">05</span>¿Qué es lo que más te gustaría resolver con esto?</label>
-          <textarea class="f-in" id="fObjetivo" name="objetivo" placeholder="Contame tu principal problema o objetivo…"></textarea>
-        </div>
-
-        <div class="q" data-q="puede_invertir_997">
-          <span class="q-label"><span class="qn">06</span>Este programa es una inversión de USD 997. ¿Estás en posición de invertir eso si te muestro que tiene sentido para tu negocio?</span>
-          <div class="opts">
-            <label class="opt"><input type="radio" name="puede_invertir_997" value="Sí"><span>Sí</span></label>
-            <label class="opt"><input type="radio" name="puede_invertir_997" value="No"><span>No</span></label>
+        <div class="wstep" data-field="consultas_dia">
+          <div class="q" data-q="consultas_dia">
+            <span class="q-label" id="lblConsultas">¿Cuántos mensajes/consultas recibís por día aprox.?</span>
+            <div class="opts" role="radiogroup" aria-labelledby="lblConsultas">
+              <label class="opt"><input type="radio" name="consultas_dia" value="Menos de 10"><span>Menos de 10</span></label>
+              <label class="opt"><input type="radio" name="consultas_dia" value="10-50"><span>10-50</span></label>
+              <label class="opt"><input type="radio" name="consultas_dia" value="50-100"><span>50-100</span></label>
+              <label class="opt"><input type="radio" name="consultas_dia" value="Más de 100"><span>Más de 100</span></label>
+            </div>
           </div>
         </div>
 
-        <div class="q" data-q="whatsapp">
-          <label class="q-label" for="fWsp"><span class="qn">07</span>Tu WhatsApp de contacto <span style="color:var(--cyan)">*</span></label>
-          <input class="f-in" id="fWsp" name="whatsapp" type="tel" placeholder="Ej: +54 9 223 585-8400" autocomplete="tel">
+        <div class="wstep" data-field="invierte_ads">
+          <div class="q" data-q="invierte_ads">
+            <span class="q-label" id="lblAds">¿Invertís hoy en publicidad para traer clientes?</span>
+            <div class="opts" role="radiogroup" aria-labelledby="lblAds">
+              <label class="opt"><input type="radio" name="invierte_ads" value="Sí"><span>Sí</span></label>
+              <label class="opt"><input type="radio" name="invierte_ads" value="No"><span>No</span></label>
+            </div>
+            <div class="f-sub" id="montoWrap">
+              <label for="fMonto">¿Cuánto invertís por mes, aprox.?</label>
+              <input class="f-in" id="fMonto" name="monto_ads_mensual" type="text" inputmode="decimal" placeholder="Ej: USD 300 / $400.000">
+            </div>
+          </div>
+        </div>
+
+        <div class="wstep" data-field="objetivo">
+          <div class="q" data-q="objetivo">
+            <label class="q-label" for="fObjetivo">¿Qué es lo que más te gustaría resolver con esto?</label>
+            <textarea class="f-in" id="fObjetivo" name="objetivo" placeholder="Contame tu principal problema o objetivo…"></textarea>
+          </div>
+        </div>
+
+        <div class="wstep" data-field="puede_invertir_997">
+          <div class="q" data-q="puede_invertir_997">
+            <span class="q-label" id="lblInversion">Este programa es una inversión de USD 997. ¿Estás en posición de invertir eso si te muestro que tiene sentido para tu negocio?</span>
+            <div class="opts" role="radiogroup" aria-labelledby="lblInversion">
+              <label class="opt"><input type="radio" name="puede_invertir_997" value="Sí"><span>Sí</span></label>
+              <label class="opt"><input type="radio" name="puede_invertir_997" value="No"><span>No</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="wstep" data-field="whatsapp">
+          <div class="q" data-q="whatsapp">
+            <label class="q-label" for="fWsp">Tu WhatsApp de contacto <span style="color:var(--cyan)">*</span></label>
+            <input class="f-in" id="fWsp" name="whatsapp" type="tel" placeholder="Ej: +54 9 223 585-8400" autocomplete="tel">
+          </div>
+        </div>
+
+        <!-- confirmación del número antes de enviar -->
+        <div class="wstep" data-field="confirmar">
+          <div class="cf-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-1.2 4.4c-.8 1.3-3.9 3.1-8.3 3.1-1 0-2-.1-2.9-.3L3 20l1.4-4.1A8.5 8.5 0 0 1 3.5 8C4.8 4.6 8.3 3 12 3s7.2 1.7 8.5 5.1c.3.8.5 1.6.5 2.4Z"/><path d="m9 11.8 2 2 4-4.2"/></svg>
+          </div>
+          <h4 class="cf-title" id="cfTitle" tabindex="-1">¿Este número de WhatsApp está bien?</h4>
+          <p class="cf-text">Es el número al que Mateo te va a escribir. Si está mal, corregilo acá abajo antes de enviar.</p>
+          <div class="cf-box">
+            <label for="fWspConfirm">Tu WhatsApp de contacto</label>
+            <input class="f-in" id="fWspConfirm" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="cfHint">
+            <p class="cf-hint" id="cfHint">Podés editarlo si necesitás corregirlo.</p>
+          </div>
         </div>
 
         <!-- honeypot anti-spam: oculto para humanos (si un bot lo llena, el envío se marca como posible spam pero NUNCA se pierde) -->
@@ -476,14 +541,17 @@ textarea.f-in{resize:vertical;min-height:88px}
           <label>Dejar vacío<input type="text" name="nota_extra_hp" tabindex="-1" autocomplete="off"></label>
         </div>
 
-        <div class="f-error" id="formError" hidden></div>
+        <div class="f-error" id="formError" role="alert" hidden></div>
 
-        <button class="btn btn-primary f-submit" id="submitBtn" type="submit">Enviar aplicación <span class="arw" aria-hidden="true">→</span></button>
+        <div class="wiz-nav">
+          <button class="btn btn-back" id="backBtn" type="button" hidden>← Atrás</button>
+          <button class="btn btn-primary wiz-next" id="submitBtn" type="submit">Siguiente <span class="arw" aria-hidden="true">→</span></button>
+        </div>
         <p class="f-note">Tus datos solo se usan para contactarte por tu aplicación.</p>
       </form>
     </div>
 
-    <div class="form-ok" id="formOk" hidden>
+    <div class="form-ok" id="formOk" role="status" tabindex="-1" hidden>
       <div class="ok-badge" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="#04121f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
@@ -612,10 +680,16 @@ textarea.f-in{resize:vertical;min-height:88px}
     document.body.classList.add("modal-open");
     scroller.scrollTop = 0;
     syncMonto();
-    var first = sent ? modal.querySelector(".modal-x") : form.querySelector("input,textarea,button");
-    if (first) setTimeout(function(){ try{ first.focus({preventScroll:true}); }catch(e){} }, 60);
+    hideError();          /* que no reaparezca el error de un intento anterior */
+    if (sent){
+      var x = modal.querySelector(".modal-x");
+      if (x) setTimeout(function(){ try{ x.focus({preventScroll:true}); }catch(e){} }, 60);
+    } else {
+      renderStep();
+    }
   }
   function closeModal(){
+    cancelAuto();
     modal.classList.remove("open");
     document.body.classList.remove("modal-open");
     if (lastFocus && lastFocus.focus){ try{ lastFocus.focus({preventScroll:true}); }catch(e){} }
@@ -673,41 +747,147 @@ textarea.f-in{resize:vertical;min-height:88px}
     if (q) q.classList.toggle("invalid", invalid);
     return invalid;
   }
-  function validate(){
-    var missing = [];
-    [["tiene_negocio","la pregunta 1"],
-     ["que_vende_canales","la pregunta 2"],
-     ["consultas_dia","la pregunta 3"],
-     ["invierte_ads","la pregunta 4"],
-     ["objetivo","la pregunta 5"],
-     ["puede_invertir_997","la pregunta 6"],
-     ["whatsapp","tu WhatsApp"]].forEach(function(pair){
-      var bad = val(pair[0]) === "";
-      if (markInvalid(pair[0], bad)) missing.push(pair[1]);
-    });
-    /* WhatsApp: mínimo razonable de dígitos */
-    if (val("whatsapp") !== ""){
-      var digits = val("whatsapp").replace(/\D/g, "");
-      if (digits.length < 8){ markInvalid("whatsapp", true); if (missing.indexOf("tu WhatsApp") === -1) missing.push("un WhatsApp válido"); }
-    }
-    return missing;
-  }
+  function digitsOf(s){ return (s || "").replace(/\D/g, ""); }
   function showError(msg){
     errBox.textContent = msg;
     errBox.hidden = false;
   }
   function hideError(){ errBox.hidden = true; }
 
+  /* ---------- WIZARD: una pregunta por pantalla ---------- */
+  var steps      = Array.prototype.slice.call(form.querySelectorAll(".wstep"));
+  var CONFIRM    = steps.length - 1;          // última pantalla = confirmación
+  var LAST_Q     = CONFIRM - 1;               // última pregunta = WhatsApp
+  var TOTAL_Q    = CONFIRM;                   // cantidad de preguntas
+  var idx        = 0;
+  var backBtn    = document.getElementById("backBtn");
+  var wizBar     = document.getElementById("wizBar");
+  var wizLabel   = document.getElementById("wizLabel");
+  var wizOf      = document.getElementById("wizOf");
+  var wspInput   = document.getElementById("fWsp");
+  var wspConfirm = document.getElementById("fWspConfirm");
+
+  /* el campo de confirmación y el original quedan siempre sincronizados */
+  wspConfirm.addEventListener("input", function(){
+    wspInput.value = wspConfirm.value;
+    wspConfirm.classList.remove("bad");
+    markInvalid("whatsapp", false);
+  });
+
+  function renderStep(){
+    cancelAuto();
+    /* limpiar marcas de error de pasos anteriores */
+    form.querySelectorAll(".q.invalid").forEach(function(q){ q.classList.remove("invalid"); });
+    wspConfirm.classList.remove("bad");
+    steps.forEach(function(s, i){ s.classList.toggle("active", i === idx); });
+    backBtn.hidden = (idx === 0);
+    wizBar.style.width = (((idx + 1) / steps.length) * 100) + "%";
+    if (idx === CONFIRM){
+      wizLabel.textContent = "Confirmá tu contacto";
+      wizOf.textContent    = "último paso";
+      btn.innerHTML        = "Sí, está bien, quiero aplicar";
+    } else {
+      wizLabel.textContent = "Pregunta " + (idx + 1);
+      wizOf.textContent    = "de " + TOTAL_Q;
+      btn.innerHTML        = (idx === LAST_Q ? "Enviar aplicación" : "Siguiente") +
+                             ' <span class="arw" aria-hidden="true">→</span>';
+    }
+    scroller.scrollTop = 0;
+    if (idx === CONFIRM){
+      /* el título se enfoca para que el lector de pantalla lo anuncie,
+         sin abrir el teclado del celular */
+      var t = document.getElementById("cfTitle");
+      if (t) setTimeout(function(){ try{ t.focus({preventScroll:true}); }catch(e){} }, 80);
+    } else {
+      var f = steps[idx].querySelector("textarea,input[type=text],input[type=tel],input[type=radio]");
+      if (f) setTimeout(function(){ try{ f.focus({preventScroll:true}); }catch(e){} }, 80);
+    }
+  }
+
+  /* valida sólo la pantalla actual */
+  function validateStep(){
+    var field = steps[idx].getAttribute("data-field");
+    if (field === "confirmar"){
+      var okc = digitsOf(wspConfirm.value).length >= 8;
+      wspConfirm.classList.toggle("bad", !okc);
+      if (!okc){ showError("Necesitamos un número de WhatsApp válido para poder contactarte."); return false; }
+      return true;
+    }
+    var v = val(field);
+    if (v === ""){
+      markInvalid(field, true);
+      showError(field === "whatsapp"
+        ? "Dejanos tu WhatsApp para poder contactarte."
+        : "Elegí o completá una respuesta para seguir.");
+      return false;
+    }
+    if (field === "whatsapp" && digitsOf(v).length < 8){
+      markInvalid(field, true);
+      showError("Ese número parece incompleto. Revisalo, por favor.");
+      return false;
+    }
+    markInvalid(field, false);
+    return true;
+  }
+
+  function goNext(){
+    if (sending || sent) return;
+    hideError();
+    if (!validateStep()) return;
+    if (idx === LAST_Q){ wspConfirm.value = wspInput.value; }   // precargar confirmación
+    if (idx < CONFIRM){ idx++; renderStep(); }
+  }
+  function goBack(){
+    if (sending || idx === 0) return;
+    hideError();
+    idx--; renderStep();
+  }
+  backBtn.addEventListener("click", goBack);
+
+  /* Auto-avance al tocar una opción. Sólo con el dedo/mouse: si avanzáramos
+     también con las flechas del teclado, el usuario quedaría registrado con
+     una opción que sólo estaba recorriendo para leerla. */
+  var autoTimer = null;
+  var lastPointer = 0;
+  function cancelAuto(){ if (autoTimer){ clearTimeout(autoTimer); autoTimer = null; } }
+  document.addEventListener("pointerdown", function(){ lastPointer = new Date().getTime(); }, true);
+
+  form.querySelectorAll('.wstep .opt input[type="radio"]').forEach(function(r){
+    r.addEventListener("change", function(){
+      cancelAuto();                                              // una respuesta nueva anula la anterior
+      var st = steps[idx];
+      if (!st || st.getAttribute("data-field") !== r.name) return;
+      if (r.name === "invierte_ads" && r.value === "Sí") return;  // primero el monto
+      if (new Date().getTime() - lastPointer > 700) return;       // vino del teclado: no avanzar solo
+      autoTimer = setTimeout(function(){
+        autoTimer = null;
+        if (steps[idx] === st && !sending && !sent) goNext();
+      }, reduce ? 0 : 330);
+    });
+  });
+
   form.addEventListener("submit", function(ev){
     ev.preventDefault();
     if (sending || sent) return;
     hideError();
 
-    var missing = validate();
-    if (missing.length){
-      showError("Te falta completar: " + missing.join(", ") + ".");
-      var firstBad = form.querySelector(".q.invalid");
-      if (firstBad) firstBad.scrollIntoView({ block:"center", behavior: reduce ? "auto" : "smooth" });
+    /* mientras no estemos en la confirmación, el botón sólo avanza */
+    if (idx !== CONFIRM){ goNext(); return; }
+    if (!validateStep()) return;
+    /* el número definitivo es el de la pantalla de confirmación */
+    wspInput.value = wspConfirm.value;
+
+    /* red de seguridad: si algo quedó vacío, volver a esa pregunta */
+    var faltante = null;
+    ["tiene_negocio","que_vende_canales","consultas_dia","invierte_ads","objetivo","puede_invertir_997","whatsapp"]
+      .forEach(function(f){ if (!faltante && val(f) === "") faltante = f; });
+    if (faltante){
+      for (var i = 0; i < steps.length; i++){
+        if (steps[i].getAttribute("data-field") === faltante){ idx = i; break; }
+      }
+      markInvalid(faltante, true);
+      renderStep();
+      showError("Te faltó responder esta pregunta.");
       return;
     }
 
@@ -728,6 +908,7 @@ textarea.f-in{resize:vertical;min-height:88px}
 
     sending = true;
     btn.disabled = true;
+    backBtn.disabled = true;
     var btnHTML = btn.innerHTML;
     btn.textContent = "Enviando…";
 
@@ -751,15 +932,21 @@ textarea.f-in{resize:vertical;min-height:88px}
       formOk.hidden = false;
       sent = true;
       scroller.scrollTop = 0;
+      /* mover el foco al mensaje para que se anuncie y no quede huérfano */
+      try{ formOk.focus({preventScroll:true}); }catch(e){}
     }).catch(function(){
       showError("No pudimos enviar tu aplicación. Revisá tu conexión e intentá de nuevo.");
     }).finally(function(){
       if (timer) clearTimeout(timer);
       sending = false;
       btn.disabled = false;
+      backBtn.disabled = false;
       btn.innerHTML = btnHTML;
     });
   });
+
+  /* estado inicial del wizard */
+  renderStep();
 })();
 </script>
 </body>
