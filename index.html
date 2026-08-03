@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://calendly.com">
 <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <style>
 /* ===================== TOKENS ===================== */
@@ -238,6 +239,65 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
 .foot-in small{color:var(--muted-2);font-family:var(--f-mono);font-size:12px}
 .legal{max-width:var(--maxw);margin:22px auto 0;padding:0 26px;color:var(--muted-2);font-size:12px;line-height:1.6;opacity:.72}
 
+/* ===================== MODAL AGENDA (Calendly embebido) =====================
+   El calendario vive adentro de la landing: el lead elige día, horario y
+   responde las preguntas de calificación sin salir de la página. */
+.cal-ov{
+  position:fixed;inset:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  background:rgba(3,5,12,.80);backdrop-filter:blur(7px);
+  opacity:0;visibility:hidden;
+  /* al abrir, visibility salta ya (si no, el modal todavía no puede tomar el foco);
+     al cerrar espera a que termine el fundido */
+  transition:opacity .28s ease,visibility 0s linear .28s;
+}
+.cal-ov.open{opacity:1;visibility:visible;transition:opacity .28s ease,visibility 0s linear 0s}
+.cal-modal{
+  position:relative;display:flex;flex-direction:column;
+  width:min(1000px,100%);
+  height:min(790px,calc(100vh - 48px));
+  height:min(790px,calc(100dvh - 48px));
+  background:linear-gradient(180deg,var(--card-2),var(--card));
+  border:1px solid var(--line-2);border-radius:20px;overflow:hidden;
+  box-shadow:0 40px 110px -30px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.02) inset;
+  opacity:0;transform:translateY(18px) scale(.985);
+  transition:opacity .3s ease,transform .32s cubic-bezier(.2,.8,.2,1);
+}
+.cal-ov.open .cal-modal{opacity:1;transform:none}
+.cal-head{display:flex;align-items:center;gap:13px;padding:14px 15px 14px 18px;border-bottom:1px solid var(--line);flex:none}
+.cal-badge{width:38px;height:38px;border-radius:11px;flex:none;display:grid;place-items:center;background:var(--grad-soft);border:1px solid var(--line-2);color:var(--cyan)}
+.cal-ic{width:20px;height:20px;display:block;flex:none}
+.btn .cal-ic{width:19px;height:19px}
+.cal-title{font-family:var(--f-display);font-weight:600;font-size:16px;line-height:1.2}
+.cal-sub{font-family:var(--f-mono);font-size:11.5px;color:var(--muted-2);margin-top:3px}
+.cal-close{
+  margin-left:auto;flex:none;width:38px;height:38px;border-radius:11px;
+  display:grid;place-items:center;cursor:pointer;color:var(--muted);
+  background:rgba(255,255,255,.06);border:1px solid var(--line-2);
+  transition:color .2s,border-color .2s,background .2s;
+}
+.cal-close:hover{color:var(--text);border-color:var(--blue-bright);background:rgba(46,107,255,.14)}
+.cal-close svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+/* el iframe cubre todo el marco: no quedan bordes sueltos si Calendly
+   ignora los colores custom y se dibuja claro */
+.cal-frame{position:relative;flex:1;min-height:0;background:var(--card)}
+.cal-widget{position:absolute;inset:0}
+.cal-widget iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.cal-state{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:15px;padding:28px;text-align:center;background:var(--card);color:var(--muted)}
+.cal-state p{max-width:34ch}
+.cal-spin{width:30px;height:30px;border-radius:50%;border:2px solid rgba(120,150,200,.20);border-top-color:var(--cyan);animation:calspin .8s linear infinite}
+@keyframes calspin{to{transform:rotate(360deg)}}
+/* con el modal abierto el fondo no se mueve, y al cerrar vuelve donde estaba */
+body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
+@media(max-width:720px){
+  .cal-ov{padding:0}
+  .cal-modal{width:100%;height:100vh;height:100dvh;border:none;border-radius:0}
+}
+@media(max-width:400px){
+  .cal-head{padding:12px 12px 12px 14px;gap:11px}
+  .cal-badge{display:none}
+}
+
 /* ===================== REVEAL ===================== */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
@@ -342,6 +402,16 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
         <rect x="11.15" y="1.9" width="1.7" height="10.1" rx=".85" transform="rotate(327.3 12 12)"/>
       </g>
     </symbol>
+
+    <!-- Calendario: icono propio, no es marca de nadie -->
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3.4" y="5" width="17.2" height="15.8" rx="3.1"/>
+      <path d="M3.4 9.9h17.2M8 3.2v3.5M16 3.2v3.5"/>
+      <g fill="currentColor" stroke="none">
+        <circle cx="8.6" cy="13.9" r="1.05"/><circle cx="12" cy="13.9" r="1.05"/><circle cx="15.4" cy="13.9" r="1.05"/>
+        <circle cx="8.6" cy="17.4" r="1.05"/><circle cx="12" cy="17.4" r="1.05"/>
+      </g>
+    </symbol>
   </defs>
 </svg>
 
@@ -359,7 +429,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
     <a class="brand" href="#top" aria-label="TEOTEC — Inicio">
       <img src="logo.png" alt="TEOTEC" class="brand-logo">
     </a>
-    <a class="btn btn-nav" data-wa href="#" target="_blank" rel="noopener">Quiero acceder</a>
+    <a class="btn btn-nav" data-cal href="#" target="_blank" rel="noopener">Agendar reunión</a>
   </div>
 </header>
 
@@ -373,8 +443,8 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
         <h1 class="reveal">Aprendé a construir <span class="grad">agentes de IA</span> que atienden y venden por WhatsApp, Instagram y Facebook.</h1>
         <p class="sub reveal">Formación uno a uno. Salís con tu agente funcionando y con la habilidad para construir el próximo — <b>sea para tu negocio o para vender el servicio a otros</b>.</p>
         <div class="hero-cta reveal">
-          <a class="btn btn-primary" data-wa href="#" target="_blank" rel="noopener">Quiero acceder a la mentoría <span class="arw" aria-hidden="true">→</span></a>
-          <span class="assur">Sin formularios <span class="sep"></span> Te respondo yo, personalmente</span>
+          <a class="btn btn-primary" data-cal href="#" target="_blank" rel="noopener"><svg class="cal-ic" aria-hidden="true"><use href="#i-cal"/></svg>Agendar reunión <span class="arw" aria-hidden="true">→</span></a>
+          <span class="assur">Elegís día y horario <span class="sep"></span> La llamada es conmigo</span>
         </div>
       </div>
 
@@ -558,9 +628,9 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
     <div class="wrap">
       <div class="final-box reveal">
         <h2>Trabajo con pocas personas a la vez.</h2>
-        <p>Es uno a uno, tres meses, con acceso diario. Escribime y vemos si tiene sentido para tu caso.</p>
-        <a class="btn btn-primary" data-wa href="#" target="_blank" rel="noopener">Quiero acceder a la mentoría <span class="arw" aria-hidden="true">→</span></a>
-        <div class="final-note">Te respondo yo, personalmente</div>
+        <p>Es uno a uno, tres meses, con acceso diario. Agendá una reunión y vemos si tiene sentido para tu caso.</p>
+        <a class="btn btn-primary" data-cal href="#" target="_blank" rel="noopener"><svg class="cal-ic" aria-hidden="true"><use href="#i-cal"/></svg>Agendar reunión <span class="arw" aria-hidden="true">→</span></a>
+        <div class="final-note">La llamada es conmigo, personalmente</div>
       </div>
     </div>
   </section>
@@ -577,19 +647,155 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
   <p class="legal">WhatsApp, Instagram y Facebook son marcas de Meta Platforms, Inc. Claude y Claude Code son marcas de Anthropic, PBC. Esta formación no está afiliada, patrocinada ni avalada por Meta ni por Anthropic.</p>
 </footer>
 
+<!-- ===================== MODAL AGENDA ===================== -->
+<div class="cal-ov" id="calOv" role="dialog" aria-modal="true" aria-labelledby="calTitle">
+  <div class="cal-modal">
+    <div class="cal-head">
+      <span class="cal-badge" aria-hidden="true"><svg class="cal-ic"><use href="#i-cal"/></svg></span>
+      <div>
+        <div class="cal-title" id="calTitle">Agendá tu reunión</div>
+        <div class="cal-sub" id="calSub">Elegí el día y el horario que te sirvan</div>
+      </div>
+      <button class="cal-close" id="calClose" type="button" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="cal-frame">
+      <div class="cal-widget" id="calWidget"></div>
+      <div class="cal-state" id="calLoading">
+        <span class="cal-spin" aria-hidden="true"></span>
+        <p>Cargando el calendario…</p>
+      </div>
+      <div class="cal-state" id="calError" hidden>
+        <p>No pudimos abrir el calendario acá adentro.</p>
+        <a class="btn btn-primary" data-cal-out href="#" target="_blank" rel="noopener">Abrirlo en otra pestaña <span class="arw" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   "use strict";
 
-  /* ============================================================
-     CTA — todo va directo a WhatsApp
-     ============================================================ */
-  var WA_NUMBER  = "5492235858400";                       /* +54 9 223 585-8400 */
-  var WA_MESSAGE = "Me interesa acceder a la mentoría 1 a 1";
-  var WA_URL     = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(WA_MESSAGE);
-  document.querySelectorAll("[data-wa]").forEach(function(a){ a.href = WA_URL; });
-
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ============================================================
+     CTA — el calendario se abre adentro de la landing
+     Los CTAs son <a> al link real de Calendly: si el JS no corre o el
+     iframe queda bloqueado, el botón sigue llevando al calendario.
+     ============================================================ */
+  var CAL_URL    = "https://calendly.com/mateomorbi19/sesion-de-consultoria";
+  var CAL_ORIGIN = "https://calendly.com";
+
+  var calOv     = document.getElementById("calOv");
+  var calWidget = document.getElementById("calWidget");
+  var calLoad   = document.getElementById("calLoading");
+  var calErr    = document.getElementById("calError");
+  var calSub    = document.getElementById("calSub");
+  var calClose  = document.getElementById("calClose");
+  var calFrame  = null;      /* el iframe, recién cuando hace falta */
+  var calTimer  = null;
+  var lastFocus = null;
+  var inertEls  = [];
+  var keptY     = 0;
+
+  document.querySelectorAll("[data-cal],[data-cal-out]").forEach(function(a){ a.href = CAL_URL; });
+
+  /* Mismos parámetros que genera el embed oficial de Calendly: nos ahorra
+     cargar su widget.js (30 kB de terceros que además los bloqueadores voltean). */
+  function embedUrl(){
+    return CAL_URL + (CAL_URL.indexOf("?") > -1 ? "&" : "?")
+      + "embed_domain=" + encodeURIComponent(location.hostname || "teotec.org")
+      + "&embed_type=Inline"
+      + "&hide_gdpr_banner=1"
+      + "&background_color=0C1424&text_color=E9F0FF&primary_color=2E6BFF";
+  }
+
+  function mountCal(){
+    if (calFrame) return;
+    calFrame = document.createElement("iframe");
+    calFrame.title = "Agendá tu reunión con TEOTEC";
+    calFrame.setAttribute("frameborder", "0");
+    calFrame.setAttribute("allow", "camera; microphone; fullscreen; payment");
+    calFrame.addEventListener("load", ready);
+    calFrame.src = embedUrl();
+    calWidget.appendChild(calFrame);
+    /* si en 15 s el iframe nunca cargó, ofrecemos el link directo */
+    calTimer = setTimeout(function(){ if (!calLoad.hidden) fail(); }, 15000);
+  }
+  function ready(){ clearTimeout(calTimer); calLoad.hidden = true; calErr.hidden = true; }
+  function fail(){ clearTimeout(calTimer); calLoad.hidden = true; calErr.hidden = false; }
+
+  /* Con inert el fondo queda fuera del tab y del lector de pantalla:
+     foco atrapado en el modal sin trucos raros. */
+  function setInert(on){
+    if (!("inert" in HTMLElement.prototype)) return;
+    if (on){
+      inertEls = Array.prototype.filter.call(document.body.children, function(el){ return el !== calOv; });
+      inertEls.forEach(function(el){ el.inert = true; });
+    } else {
+      inertEls.forEach(function(el){ el.inert = false; });
+      inertEls = [];
+    }
+  }
+
+  function lockScroll(){
+    keptY = window.pageYOffset || document.documentElement.scrollTop || 0;
+    document.body.style.top = (-keptY) + "px";
+    document.body.classList.add("cal-lock");
+  }
+  function unlockScroll(){
+    if (!document.body.classList.contains("cal-lock")) return;
+    document.body.classList.remove("cal-lock");
+    document.body.style.top = "";
+    var html = document.documentElement, prev = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";       /* sin esto el scroll-behavior:smooth anima la vuelta */
+    window.scrollTo(0, keptY);
+    html.style.scrollBehavior = prev;
+  }
+
+  function openCal(trigger){
+    lastFocus = trigger || document.activeElement;
+    lockScroll();
+    calOv.classList.add("open");
+    setInert(true);
+    mountCal();
+    void calOv.offsetHeight;   /* flush de estilos: recién ahí el overlay es visible y focusable */
+    calClose.focus({ preventScroll:true });
+    document.addEventListener("keydown", onCalKey);
+  }
+  function closeCal(){
+    if (!calOv.classList.contains("open")) return;
+    calOv.classList.remove("open");
+    setInert(false);
+    unlockScroll();
+    document.removeEventListener("keydown", onCalKey);
+    /* preventScroll: devolver el foco al CTA no tiene que mover la página */
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll:true });
+  }
+  function onCalKey(e){ if (e.key === "Escape" || e.key === "Esc"){ e.preventDefault(); closeCal(); } }
+
+  document.querySelectorAll("[data-cal]").forEach(function(a){
+    a.addEventListener("click", function(e){
+      /* ctrl/cmd/click del medio siguen abriendo en pestaña nueva */
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      openCal(a);
+    });
+  });
+
+  calClose.addEventListener("click", closeCal);
+  calOv.addEventListener("mousedown", function(e){ if (e.target === calOv) closeCal(); });
+
+  window.addEventListener("message", function(e){
+    if (e.origin !== CAL_ORIGIN) return;
+    var d = e.data;
+    if (!d || typeof d.event !== "string" || d.event.indexOf("calendly.") !== 0) return;
+    ready();
+    if (d.event === "calendly.event_scheduled") calSub.textContent = "Listo — te llega la confirmación por mail";
+  });
 
   /* ---------- Nav: sólido al scrollear ---------- */
   var nav = document.getElementById("nav");
