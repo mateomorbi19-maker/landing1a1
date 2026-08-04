@@ -1,3 +1,6 @@
 node_modules/
 .DS_Store
 .claude/
+
+# fuentes de imagen: quedan en la maquina, no van al repo
+foto-original.*

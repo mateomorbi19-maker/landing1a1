@@ -5,11 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
 <title>Mentoría 1 a 1 — Construí tu agente de IA para WhatsApp, Instagram y Facebook · TEOTEC</title>
 <meta name="description" content="Mentoría 1 a 1 de 3 meses para aprender a construir agentes de IA que atienden y venden por WhatsApp, Instagram y Facebook. Con Claude Code, aplicado a tu caso.">
+<link rel="canonical" href="https://teotec.org/">
+
+<!-- El link de esta página viaja por WhatsApp, DM de Instagram y Facebook:
+     los tres scrapean Open Graph. Sin esto se pega como URL pelada. -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://teotec.org/">
+<meta property="og:locale" content="es_AR">
+<meta property="og:site_name" content="TEOTEC">
+<meta property="og:title" content="Construí tu agente de IA para WhatsApp, Instagram y Facebook">
+<meta property="og:description" content="Mentoría 1 a 1 de 3 meses. Doce sesiones en vivo con Mateo: el agente lo construís vos, sobre tu caso real.">
+<meta property="og:image" content="https://teotec.org/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="TEOTEC — Mentoría 1 a 1 para construir agentes de IA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Construí tu agente de IA para WhatsApp, Instagram y Facebook">
+<meta name="twitter:description" content="Mentoría 1 a 1 de 3 meses. Doce sesiones en vivo con Mateo: el agente lo construís vos, sobre tu caso real.">
+<meta name="twitter:image" content="https://teotec.org/og.png">
+
+<meta name="theme-color" content="#05070F">
+<link rel="icon" href="/favicon.png" type="image/png" sizes="256x256">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Sólo los pesos que alguna regla usa de verdad: Space Grotesk vive en 600/700,
+     Inter en 400/500/600, JetBrains Mono en 400/500. Eran 10 archivos, son 7. -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://calendly.com">
-<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <style>
 /* ===================== TOKENS ===================== */
 :root{
@@ -104,8 +128,21 @@ a{color:inherit;text-decoration:none}
 .hero-cta{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
 .assur{font-family:var(--f-mono);font-size:12.5px;color:var(--muted-2);display:flex;align-items:center;gap:10px}
 .assur .sep{width:4px;height:4px;border-radius:50%;background:var(--muted-2)}
+/* dos puertas de auto-selección: el visitante se ubica sin scrollear a ciegas */
+.hero-pick{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:26px;font-size:14.5px}
+.hero-pick a{color:var(--muted);border-bottom:1px solid rgba(120,150,200,.28);padding-bottom:2px;transition:color .25s,border-color .25s}
+.hero-pick a:hover{color:var(--cyan);border-bottom-color:rgba(53,214,255,.55)}
+.hero-pick .sep{flex:none;width:4px;height:4px;border-radius:50%;background:var(--muted-2)}
+@media(max-width:560px){
+  .hero-pick{gap:10px;font-size:14px}
+  .hero-pick .sep{display:none}
+  .hero-pick a{width:100%}
+}
 
 /* ===================== CHAT DEMO MULTICANAL (signature) ===================== */
+.chat-wrap{max-width:430px;margin-left:auto;width:100%}
+.chat-note{margin-top:14px;font-size:13.5px;line-height:1.55;color:var(--muted-2)}
+.chat-note b{color:var(--muted);font-weight:600}
 .chat{
   position:relative;background:linear-gradient(180deg,var(--card-2),var(--card));
   border:1px solid var(--line-2);border-radius:22px;overflow:hidden;
@@ -132,6 +169,8 @@ a{color:inherit;text-decoration:none}
 .chat-who{font-family:var(--f-display);font-weight:600;font-size:15px;line-height:1.2}
 .chat-status{font-family:var(--f-mono);font-size:11px;color:#49E39B;display:flex;align-items:center;gap:6px;margin-top:2px}
 .chat-status .on{width:6px;height:6px;border-radius:50%;background:#49E39B;box-shadow:0 0 8px #49E39B}
+.chat-cap{margin-left:auto;flex:none;font-family:var(--f-mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ch);border:1px solid color-mix(in srgb,var(--ch) 40%,transparent);background:color-mix(in srgb,var(--ch) 13%,transparent);border-radius:99px;padding:5px 9px;white-space:nowrap;transition:color .45s ease,border-color .45s ease,background .45s ease}
+@media(max-width:400px){.chat-cap{display:none}}
 /* el degradado de arriba hace que una conversación más larga que la caja
    se desvanezca en vez de cortarse a la mitad de una frase */
 .chat-body{height:326px;padding:20px 18px;overflow:hidden;display:flex;flex-direction:column;gap:11px;justify-content:flex-end;
@@ -177,7 +216,7 @@ a{color:inherit;text-decoration:none}
 .who-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:52px}
 /* display:flex + margin-top:auto → las frases de cierre de las dos
    tarjetas quedan alineadas aunque el texto de arriba mida distinto */
-.who-grid .card{padding:34px 30px;display:flex;flex-direction:column;align-items:flex-start}
+.who-grid .card{padding:34px 30px;display:flex;flex-direction:column;align-items:flex-start;scroll-margin-top:96px}
 .who-tag{display:inline-block;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);border:1px solid var(--line-2);background:var(--glass);border-radius:99px;padding:6px 13px;margin-bottom:18px}
 .who-grid .card p{font-size:16px;line-height:1.6}
 .who-out{width:100%;margin-top:auto;padding-top:20px;border-top:1px solid var(--line);color:#cdd9ef!important;font-size:15.5px!important}
@@ -190,9 +229,18 @@ a{color:inherit;text-decoration:none}
 .skills li b{color:var(--text);font-weight:600}
 .skills .tick{flex:none;width:23px;height:23px;border-radius:50%;background:var(--grad-soft);border:1px solid var(--line-2);display:grid;place-items:center;margin-top:3px}
 .skills .tick svg{width:12px;height:12px;stroke:var(--cyan);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.mid-cta{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:44px}
+@media(max-width:560px){
+  .mid-cta{margin-top:34px}
+  .mid-cta .btn-primary{width:100%}
+  .mid-cta .assur{width:100%;justify-content:center}
+}
 
 /* ---- Cómo lo hacemos ---- */
 .steps{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:52px}
+/* la etapa fusionada ocupa el ancho completo: 3 tarjetas en 2 columnas
+   dejarían un hueco, y esta tiene más texto que las otras dos */
+.step-wide{grid-column:1/-1}
 .step-n{font-family:var(--f-mono);font-size:13px;letter-spacing:.14em;color:var(--cyan);margin-bottom:14px;display:block}
 .brandrow{display:flex;align-items:center;gap:12px;margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
 .brandrow .mk{width:26px;height:26px}
@@ -202,6 +250,27 @@ a{color:inherit;text-decoration:none}
 .claude-chip .cc-txt{font-family:var(--f-mono);font-size:13.5px;color:#F0C3AE;letter-spacing:.01em}
 .claude-chip .cc-txt .cur{display:inline-block;width:7px;height:15px;vertical-align:-2px;background:var(--claude);margin-left:3px;animation:blink 1.1s steps(1) infinite}
 @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+
+/* ---- Quién te va a acompañar ---- */
+.bio{display:grid;grid-template-columns:172px 1fr;gap:30px;align-items:start;margin-top:44px;
+  background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:30px}
+.bio-foto{width:172px;height:172px;border-radius:16px;object-fit:cover;display:block;
+  border:1px solid var(--line-2);box-shadow:0 18px 44px -22px rgba(0,0,0,.9)}
+.bio-txt p{color:#cdd9ef;font-size:16.5px;line-height:1.6}
+.bio-txt p+p{margin-top:14px}
+.bio-txt b{color:var(--text);font-weight:600}
+.bio-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.bio-link{display:inline-flex;align-items:center;gap:9px;padding:9px 14px;border-radius:11px;
+  border:1px solid var(--line-2);background:var(--glass);font-size:14.5px;color:#cdd9ef;
+  transition:border-color .3s,background .3s,color .3s}
+.bio-link:hover{border-color:rgba(53,214,255,.5);background:rgba(46,107,255,.12);color:var(--text)}
+.bio-link .mk{width:18px;height:18px}
+.bio-link:hover .mk-dim{filter:none;opacity:1}
+.bio-note{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted-2);font-size:14.5px}
+@media(max-width:640px){
+  .bio{grid-template-columns:1fr;gap:22px;padding:26px 22px}
+  .bio-foto{width:132px;height:132px}
+}
 
 /* ---- Qué te llevás / No es para vos ---- */
 .two-col{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;margin-top:52px;align-items:start}
@@ -217,6 +286,30 @@ a{color:inherit;text-decoration:none}
 .panel .m svg{width:14px;height:14px;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .panel:not(.neg) .m svg{stroke:var(--cyan)}
 .panel.neg .m svg{stroke:var(--muted-2)}
+
+/* ---- FAQ: <details> nativo, sin una línea de JS ----
+   Coherente con el resto: nada que decida una conversión depende del script. */
+.faq{margin-top:46px;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{display:flex;align-items:flex-start;gap:14px;padding:19px 0;cursor:pointer;list-style:none;
+  font-family:var(--f-display);font-weight:600;font-size:17.5px;line-height:1.4;color:var(--text);transition:color .25s}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::marker{content:""}
+.faq summary:hover{color:var(--cyan)}
+.faq .sig{position:relative;flex:none;width:18px;height:18px;margin-top:4px}
+.faq .sig::before,.faq .sig::after{content:"";position:absolute;background:var(--cyan);border-radius:2px;transition:transform .3s cubic-bezier(.2,.7,.2,1),opacity .3s}
+.faq .sig::before{top:8px;left:0;width:18px;height:2px}
+.faq .sig::after{top:0;left:8px;width:2px;height:18px}
+.faq details[open] .sig::after{transform:rotate(90deg);opacity:0}
+.faq .ans{padding:0 0 22px 32px;color:#cdd9ef;font-size:16px;line-height:1.62;max-width:62ch}
+.faq .ans b{color:var(--text);font-weight:600}
+@media(max-width:560px){
+  .faq summary{font-size:16px;gap:12px}
+  .faq .ans{padding-left:30px;font-size:15.5px}
+}
+
+/* ---- Qué pasa si agendás (reusa el panel) ---- */
+.call{margin-bottom:26px}
 
 /* ===================== STATEMENT ===================== */
 .statement{font-family:var(--f-display);font-size:clamp(22px,2.8vw,32px);font-weight:600;line-height:1.4;letter-spacing:-.01em;max-width:36ch;margin:0 auto;text-align:left;color:var(--text)}
@@ -286,6 +379,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
 .cal-state{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:15px;padding:28px;text-align:center;background:var(--card);color:var(--muted)}
 .cal-state p{max-width:34ch}
 .cal-spin{width:30px;height:30px;border-radius:50%;border:2px solid rgba(120,150,200,.20);border-top-color:var(--cyan);animation:calspin .8s linear infinite}
+/* la salida está desde el segundo cero: el que se queda mirando el spinner
+   ya tiene dónde clickear sin esperar a que salte el timeout */
+.cal-esc{font-family:var(--f-mono);font-size:12.5px;color:var(--muted-2);border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.cal-esc:hover{color:var(--cyan);border-bottom-color:rgba(53,214,255,.5)}
 @keyframes calspin{to{transform:rotate(360deg)}}
 /* con el modal abierto el fondo no se mueve, y al cerrar vuelve donde estaba */
 body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
@@ -298,16 +395,20 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
   .cal-badge{display:none}
 }
 
-/* ===================== REVEAL ===================== */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
-.reveal.in{opacity:1;transform:none}
+/* ===================== REVEAL =====================
+   Ojo con el punto de partida: si el opacity:0 fuera incondicional, cualquier
+   excepción del script dejaría media página invisible para siempre. La clase
+   .js la pone el propio bloque del observer, una línea antes de instanciarlo:
+   si el JS explota antes de llegar ahí, nunca se ocultó nada. */
+.js .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.js .reveal.in{opacity:1;transform:none}
 
 /* ===================== RESPONSIVE ===================== */
 @media(max-width:940px){
   .hero-grid{grid-template-columns:1fr;gap:44px}
   .hero{padding:130px 0 70px}
   .hero .sub{max-width:none}
-  .chat{margin:0 auto;max-width:430px}
+  .chat-wrap{margin:0 auto}
   .who-grid,.steps{grid-template-columns:1fr;gap:16px}
   .skills{grid-template-columns:1fr;gap:0}
   .two-col{grid-template-columns:1fr;gap:16px}
@@ -355,7 +456,7 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
 /* ===================== REDUCED MOTION ===================== */
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;scroll-behavior:auto!important}
-  .reveal{opacity:1;transform:none;transition:none}
+  .js .reveal{opacity:1;transform:none;transition:none}
   .bubble{opacity:1;transform:none}
   .blob{opacity:.28}
   .claude-chip .cur{opacity:1}
@@ -403,6 +504,11 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
       </g>
     </symbol>
 
+    <symbol id="i-yt" viewBox="0 0 24 24">
+      <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814"/>
+      <path fill="#fff" d="M9.545 15.568V8.432L15.818 12z"/>
+    </symbol>
+
     <!-- Calendario: icono propio, no es marca de nadie -->
     <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
       <rect x="3.4" y="5" width="17.2" height="15.8" rx="3.1"/>
@@ -427,9 +533,9 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
 <header class="nav" id="nav">
   <div class="nav-in">
     <a class="brand" href="#top" aria-label="TEOTEC — Inicio">
-      <img src="logo.png" alt="TEOTEC" class="brand-logo">
+      <img src="logo.webp" alt="TEOTEC" class="brand-logo" width="388" height="102">
     </a>
-    <a class="btn btn-nav" data-cal href="#" target="_blank" rel="noopener">Agendar reunión</a>
+    <a class="btn btn-nav" data-cal href="https://calendly.com/mateomorbi19/sesion-de-consultoria" target="_blank" rel="noopener">Agendar reunión</a>
   </div>
 </header>
 
@@ -439,17 +545,22 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <span class="eyebrow reveal"><span class="pulse"></span>Formación 1 a 1 · 3 meses · En vivo</span>
-        <h1 class="reveal">Aprendé a construir <span class="grad">agentes de IA</span> que atienden y venden por WhatsApp, Instagram y Facebook.</h1>
-        <p class="sub reveal">Formación uno a uno. Salís con tu agente funcionando y con la habilidad para construir el próximo — <b>sea para tu negocio o para vender el servicio a otros</b>.</p>
-        <div class="hero-cta reveal">
-          <a class="btn btn-primary" data-cal href="#" target="_blank" rel="noopener"><svg class="cal-ic" aria-hidden="true"><use href="#i-cal"/></svg>Agendar reunión <span class="arw" aria-hidden="true">→</span></a>
-          <span class="assur">Elegís día y horario <span class="sep"></span> La llamada es conmigo</span>
+        <!-- Nada de .reveal en lo que ya está en pantalla al cargar: el h1 es el LCP
+             y no tiene por qué esperar al script del final del body para aparecer. -->
+        <span class="eyebrow"><span class="pulse"></span>Mentoría 1 a 1 · 12 sesiones en vivo · 3 meses</span>
+        <h1>Construí tu <span class="grad">agente de IA</span> para WhatsApp, Instagram y Facebook.</h1>
+        <p class="sub">Doce sesiones uno a uno, en vivo, conmigo. El agente lo construís vos sobre un caso real — <b>tu negocio, o el de un cliente al que le querés vender el servicio</b>.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" data-cal href="https://calendly.com/mateomorbi19/sesion-de-consultoria" target="_blank" rel="noopener"><svg class="cal-ic" aria-hidden="true"><use href="#i-cal"/></svg>Agendar reunión <span class="arw" aria-hidden="true">→</span></a>
+          <span class="assur">30 minutos, sin costo <span class="sep"></span> Hablás con Mateo, no con un vendedor</span>
         </div>
+        <!-- El visitante se ubica solo, sin mover un bloque de lugar -->
+        <p class="hero-pick"><a href="#para-negocio">Tengo un negocio que vende por chat</a> <span class="sep" aria-hidden="true"></span> <a href="#para-habilidad">Quiero la habilidad para vender el servicio</a></p>
       </div>
 
       <!-- signature: demo multicanal -->
-      <div class="chat reveal" id="chat">
+      <div class="chat-wrap">
+      <div class="chat" id="chat">
         <div class="chat-tabs" role="tablist" aria-label="Elegí un canal para ver el agente en acción">
           <button class="ch-tab on" type="button" role="tab" data-ch="wa" id="tab-wa" aria-selected="true" aria-controls="chatBody">
             <svg class="mk mk-dim" aria-hidden="true"><use href="#i-wa"/></svg><span>WhatsApp</span>
@@ -468,9 +579,12 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
             <span class="av-badge"><svg class="mk" id="avMark"><use href="#i-wa"/></svg></span>
           </div>
           <div>
-            <div class="chat-who" id="chatWho">Agente · WhatsApp</div>
+            <div class="chat-who" id="chatWho">Tienda Norte · WhatsApp</div>
             <div class="chat-status"><span class="on"></span>en línea</div>
           </div>
+          <!-- cada canal muestra una capacidad distinta: hasta ahora eso vivía
+               en un comentario del JS y el visitante veía "el mismo bot 3 veces" -->
+          <span class="chat-cap" id="chatCap">Vende y cobra</span>
         </div>
 
         <div class="chat-body" id="chatBody" role="tabpanel" aria-live="off" aria-labelledby="tab-wa"></div>
@@ -479,6 +593,8 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
           <div class="box">Escribí un mensaje…</div>
           <div class="send"><svg viewBox="0 0 24 24"><path d="M4 12l16-7-7 16-2-7-7-2z"/></svg></div>
         </div>
+      </div>
+      <p class="chat-note">Conversación de ejemplo — <b>es lo que vas a saber construir</b>. Contesta a las 3 de la mañana igual que a las 3 de la tarde, y exactamente lo que vos le dijiste que conteste.</p>
       </div>
     </div>
   </section>
@@ -505,7 +621,7 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
       <h2 class="sec-title reveal">La misma habilidad, dos caminos</h2>
 
       <div class="who-grid">
-        <article class="card reveal">
+        <article class="card reveal" id="para-negocio">
           <div class="glow"></div>
           <span class="who-tag">Para tu negocio</span>
           <h3>Ya vendés por chat</h3>
@@ -513,12 +629,12 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
           <p class="who-out">Salís con <b>tu agente atendiendo tus canales</b>, y sabiendo ajustarlo vos mismo.</p>
         </article>
 
-        <article class="card reveal">
+        <article class="card reveal" id="para-habilidad">
           <div class="glow"></div>
           <span class="who-tag">Para vender el servicio</span>
           <h3>Querés la habilidad</h3>
-          <p>Querés incorporar una capacidad concreta y demandada, y ofrecerla como servicio a negocios que la necesitan.</p>
-          <p class="who-out">Salís sabiendo <b>construir un agente de punta a punta</b> para el caso de un cliente.</p>
+          <p>Querés aprender a construir esto de punta a punta y ofrecerlo a negocios que hoy contestan cada mensaje a mano, sin depender de una plantilla ni de un programador.</p>
+          <p class="who-out">Salís sabiendo <b>construir un agente de punta a punta</b>, y con el primero hecho para mostrar. La parte comercial la ponés vos.</p>
         </article>
       </div>
     </div>
@@ -532,11 +648,18 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
 
       <ul class="skills">
         <li class="reveal"><span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Conectar <b>WhatsApp, Instagram y Facebook</b> a un agente propio con las APIs oficiales</span></li>
-        <li class="reveal"><span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Diseñar el cerebro del agente: que conozca el producto, responda en el tono correcto y <b>no invente</b></span></li>
-        <li class="reveal"><span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Construirlo con <b>Claude Code</b>, sin ser programador</span></li>
+        <li class="reveal"><span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Escribirle las instrucciones y cargarle tu catálogo, tus precios y tus reglas — para que responda como respondés vos, y <b>no invente</b></span></li>
+        <li class="reveal"><span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Construirlo con <b>Claude Code</b>: le hablás en castellano y él escribe el código. Vos decidís qué tiene que hacer el agente, no cómo se escribe</span></li>
         <li class="reveal"><span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Hacer que <b>califique, agende, derive a un humano o cierre</b> según lo que pida la conversación</span></li>
-        <li class="reveal"><span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Medir, corregir y mejorar el agente <b>vos mismo</b>, sin depender de nadie</span></li>
+        <li class="reveal"><span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Ver qué preguntas no supo contestar, corregirlo y volver a publicarlo — <b>vos, el mismo día</b>, sin escribirle a nadie</span></li>
       </ul>
+
+      <!-- En mobile el CTA del nav está oculto: sin esto, el que se convence
+           acá tiene que scrollear cuatro secciones para encontrar dónde clickear -->
+      <div class="mid-cta reveal">
+        <a class="btn btn-primary" data-cal href="https://calendly.com/mateomorbi19/sesion-de-consultoria" target="_blank" rel="noopener"><svg class="cal-ic" aria-hidden="true"><use href="#i-cal"/></svg>Agendar reunión <span class="arw" aria-hidden="true">→</span></a>
+        <span class="assur">30 minutos, sin costo</span>
+      </div>
     </div>
   </section>
 
@@ -544,45 +667,62 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
   <section class="section" id="como">
     <div class="wrap">
       <p class="sec-eyebrow reveal">Cómo lo hacemos</p>
-      <h2 class="sec-title reveal">Cuatro etapas, tres meses</h2>
+      <h2 class="sec-title reveal">Tres etapas, tres meses</h2>
 
       <div class="steps">
         <article class="card reveal">
           <div class="glow"></div>
           <span class="step-n">01 — DIAGNÓSTICO</span>
           <h3>Definimos el caso</h3>
-          <p>Arrancamos por lo concreto: tu negocio o el de tu primer cliente, qué conversaciones tiene que resolver el agente y dónde termina su trabajo.</p>
+          <p>Arrancamos por lo concreto: tu negocio, o —si todavía no tenés cliente— un caso real que definimos en la primera sesión y que te queda hecho para mostrar.</p>
         </article>
 
         <article class="card reveal">
           <div class="glow"></div>
           <span class="step-n">02 — CONSTRUCCIÓN</span>
           <h3>Lo armamos juntos</h3>
-          <p>Sesión por sesión, construimos el agente en vivo con Claude Code. Es la herramienta desde la que se apalanca toda la formación.</p>
+          <p>Sesión por sesión, lo construimos en vivo con Claude Code. Es la herramienta con la que se hace todo, y <b>la vas a manejar vos, no yo</b>.</p>
           <div class="claude-chip">
             <svg class="mk mk-dim" aria-hidden="true"><use href="#i-claude"/></svg>
             <span class="cc-txt" id="ccTxt"><span class="cur" aria-hidden="true"></span></span>
           </div>
         </article>
 
-        <article class="card reveal">
+        <article class="card reveal step-wide">
           <div class="glow"></div>
-          <span class="step-n">03 — CONEXIÓN</span>
-          <h3>Lo publicamos en tus canales</h3>
-          <p>Sale del entorno de prueba y pasa a atender de verdad, conectado con las APIs oficiales de cada plataforma.</p>
+          <span class="step-n">03 — PUBLICACIÓN Y AJUSTE</span>
+          <h3>Sale a atender de verdad, y lo afinamos</h3>
+          <p>Deja el entorno de prueba y pasa a contestar en tus canales, conectado con las APIs oficiales de cada plataforma. Después leemos conversaciones reales de tu agente, marcamos las respuestas que estuvieron mal y <b>las arreglás vos mientras te miro</b>.</p>
           <div class="brandrow">
             <svg class="mk mk-dim" aria-hidden="true"><use href="#i-wa"/></svg>
             <svg class="mk mk-dim" aria-hidden="true"><use href="#i-ig"/></svg>
             <svg class="mk mk-dim" aria-hidden="true"><use href="#i-fb"/></svg>
           </div>
         </article>
+      </div>
+    </div>
+  </section>
 
-        <article class="card reveal">
-          <div class="glow"></div>
-          <span class="step-n">04 — AJUSTE</span>
-          <h3>Lo afinamos con conversaciones reales</h3>
-          <p>Miramos cómo responde con gente de verdad, corregimos lo que falla y practicás hacer esos ajustes vos, hasta que no me necesites.</p>
-        </article>
+  <!-- ===================== QUIÉN TE VA A ACOMPAÑAR ===================== -->
+  <section class="section" id="quien">
+    <div class="wrap">
+      <p class="sec-eyebrow reveal">Quién te va a acompañar</p>
+      <h2 class="sec-title reveal">Soy Mateo Morbiducci</h2>
+
+      <div class="bio reveal">
+        <img class="bio-foto" src="mateo.webp" width="344" height="344" alt="Mateo Morbiducci" loading="lazy" decoding="async">
+        <div class="bio-txt">
+          <p>Hace <b>dos años</b> que construyo agentes de IA para negocios que venden por chat, entre ellos: fábricas de tapizados para vehículos, empresa de productos de seguridad para el hogar, e-commerce de artículos de golf y mentores que atienden por Instagram/WhatsApp.</p>
+          <p>En los tres meses <b>hablás conmigo</b>. No hay equipo ni asistente: las 12 sesiones las doy yo y el WhatsApp lo contesto yo.</p>
+          <div class="bio-links">
+            <a class="bio-link" href="https://www.instagram.com/mateomrb/" target="_blank" rel="noopener">
+              <svg class="mk mk-dim" aria-hidden="true"><use href="#i-ig"/></svg>@mateomrb
+            </a>
+            <a class="bio-link" href="https://www.youtube.com/@mateomrb" target="_blank" rel="noopener">
+              <svg class="mk mk-dim" aria-hidden="true"><use href="#i-yt"/></svg>Mateo Morbiducci
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -597,10 +737,10 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
         <div class="panel reveal">
           <h3>Qué te llevás</h3>
           <ul>
-            <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Tu agente <b>funcionando en tu canal</b> — no una demo</span></li>
-            <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span><b>12 sesiones 1 a 1</b> en vivo, una por semana durante 3 meses</span></li>
-            <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Acceso directo <b>por WhatsApp todos los días</b>, durante toda la mentoría</span></li>
-            <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Todo el sistema <b>en tus cuentas y a tu nombre</b></span></li>
+            <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Tu agente <b>contestando en tu número</b>, no una demo</span></li>
+            <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Todo el sistema <b>en tus cuentas y a tu nombre</b> — no hay nada mío que se pueda apagar</span></li>
+            <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Las instrucciones de tu agente <b>en un archivo que es tuyo</b> y podés editar</span></li>
+            <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>El criterio para <b>construir el próximo sin mí</b></span></li>
           </ul>
         </div>
 
@@ -609,7 +749,7 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
           <ul>
             <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></span><span>Buscás un curso grabado para ver a tu ritmo</span></li>
             <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></span><span>Querés que te lo hagan y no aprender nada — para eso contratá una agencia</span></li>
-            <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></span><span>Esperás que funcione sin poner horas de trabajo</span></li>
+            <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></span><span>Entre sesión y sesión no vas a poder sentarte a construir</span></li>
           </ul>
         </div>
       </div>
@@ -623,14 +763,71 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
     </div>
   </section>
 
+  <!-- ===================== PREGUNTAS ===================== -->
+  <section class="section" id="preguntas">
+    <div class="wrap">
+      <p class="sec-eyebrow reveal">Preguntas</p>
+      <h2 class="sec-title reveal">Las dudas que aparecen en cada llamada</h2>
+      <p class="sec-lead reveal">Te las contesto acá, antes de que agendes.</p>
+
+      <div class="faq reveal">
+        <details>
+          <summary><span class="sig" aria-hidden="true"></span>¿Necesito saber programar?</summary>
+          <p class="ans">No. Le escribís las instrucciones en castellano y Claude Code escribe el código. Si sabés armar una planilla y explicar cómo atendés vos, alcanza.</p>
+        </details>
+
+        <details>
+          <summary><span class="sig" aria-hidden="true"></span>¿Cuánto sale y cómo se paga?</summary>
+          <p class="ans">El precio te lo digo <b>en los primeros diez minutos de la llamada</b>, antes de que me cuentes nada más. Se puede en uno o dos pagos, por transferencia, tarjeta de crédito o débito, o cripto. No es una suscripción.</p>
+        </details>
+
+        <details>
+          <summary><span class="sig" aria-hidden="true"></span>¿Cuánto tiempo por semana me lleva?</summary>
+          <p class="ans">Una sesión de una hora, más lo que construyas entre medio. Cada uno va a su ritmo: <b>no vas a volverte experto en IA</b>, vas a saber lo necesario para automatizar tu proceso de ventas.</p>
+        </details>
+
+        <details>
+          <summary><span class="sig" aria-hidden="true"></span>Además de la mentoría, ¿qué me sale mantenerlo prendido?</summary>
+          <p class="ans">Depende del volumen de mensajes. Un negocio que recibe unas 1.000 consultas por mes gasta <b>entre 150 y 200 dólares mensuales</b>, sumando servidor y plan de Claude. Te lo digo ahora y no en la sesión 8.</p>
+        </details>
+
+        <details>
+          <summary><span class="sig" aria-hidden="true"></span>Cuando terminan los tres meses, ¿quedo solo?</summary>
+          <p class="ans">El sistema queda en tus cuentas y las instrucciones del agente en un archivo que podés editar. Por eso lo construís vos y no yo: para que puedas tocarlo sin depender de mí.</p>
+        </details>
+
+        <details>
+          <summary><span class="sig" aria-hidden="true"></span>¿Me enseñás también a conseguir clientes?</summary>
+          <p class="ans">No. Te enseño a construirlo, y salís con uno hecho para mostrar. <b>La parte comercial la ponés vos.</b></p>
+        </details>
+
+        <details>
+          <summary><span class="sig" aria-hidden="true"></span>¿Por qué no lo hago solo con YouTube?</summary>
+          <p class="ans">En YouTube está la información. No está el orden, ni el diagnóstico de tu caso, ni alguien que te desatasque el martes cuando la API de Meta devuelve un error que no está en ningún video.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== FINAL CTA ===================== -->
   <section class="final">
     <div class="wrap">
+      <div class="panel call reveal">
+        <h3>Qué pasa si agendás</h3>
+        <ul>
+          <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Treinta minutos por videollamada, <b>sin costo y sin compromiso</b>.</span></li>
+          <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Me contás tu caso: tu negocio, o el tipo de cliente al que le querés vender el servicio.</span></li>
+          <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span><b>En los primeros diez minutos te digo cuánto sale y cómo se paga</b>, antes de que me cuentes nada más.</span></li>
+          <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>Te digo si con esto se resuelve. Si no se resuelve, te lo digo ahí mismo y no te hago perder tres meses.</span></li>
+          <li><span class="m" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 5 5L19 7"/></svg></span><span>No hay presentación grabada ni te va a atender un vendedor.</span></li>
+        </ul>
+      </div>
+
       <div class="final-box reveal">
-        <h2>Trabajo con pocas personas a la vez.</h2>
-        <p>Es uno a uno, tres meses, con acceso diario. Agendá una reunión y vemos si tiene sentido para tu caso.</p>
-        <a class="btn btn-primary" data-cal href="#" target="_blank" rel="noopener"><svg class="cal-ic" aria-hidden="true"><use href="#i-cal"/></svg>Agendar reunión <span class="arw" aria-hidden="true">→</span></a>
-        <div class="final-note">La llamada es conmigo, personalmente</div>
+        <h2>Doce sesiones, uno a uno, y salís sabiendo hacerlo.</h2>
+        <p>Trabajo con pocas personas a la vez porque las doce sesiones las doy yo y contesto el WhatsApp todos los días. Agendá 30 minutos y vemos si tu caso encaja.</p>
+        <a class="btn btn-primary" data-cal href="https://calendly.com/mateomorbi19/sesion-de-consultoria" target="_blank" rel="noopener"><svg class="cal-ic" aria-hidden="true"><use href="#i-cal"/></svg>Agendar reunión <span class="arw" aria-hidden="true">→</span></a>
+        <div class="final-note">30 minutos, sin costo. Te atiendo yo, Mateo — el mismo que da las 12 sesiones.</div>
       </div>
     </div>
   </section>
@@ -640,11 +837,11 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
 <footer>
   <div class="foot-in">
     <a class="brand" href="#top">
-      <img src="logo.png" alt="TEOTEC" class="brand-logo">
+      <img src="logo.webp" alt="TEOTEC" class="brand-logo" width="388" height="102">
     </a>
     <small>© 2026 TEOTEC · Agentes de IA para canales de chat</small>
   </div>
-  <p class="legal">WhatsApp, Instagram y Facebook son marcas de Meta Platforms, Inc. Claude y Claude Code son marcas de Anthropic, PBC. Esta formación no está afiliada, patrocinada ni avalada por Meta ni por Anthropic.</p>
+  <p class="legal">WhatsApp, Instagram y Facebook son marcas de Meta Platforms, Inc. YouTube es marca de Google LLC. Claude y Claude Code son marcas de Anthropic, PBC. Esta formación no está afiliada, patrocinada ni avalada por Meta, Google ni Anthropic.</p>
 </footer>
 
 <!-- ===================== MODAL AGENDA ===================== -->
@@ -666,10 +863,11 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
       <div class="cal-state" id="calLoading">
         <span class="cal-spin" aria-hidden="true"></span>
         <p>Cargando el calendario…</p>
+        <a class="cal-esc" data-cal-out href="https://calendly.com/mateomorbi19/sesion-de-consultoria" target="_blank" rel="noopener">¿Tarda? Abrilo en otra pestaña →</a>
       </div>
       <div class="cal-state" id="calError" hidden>
         <p>No pudimos abrir el calendario acá adentro.</p>
-        <a class="btn btn-primary" data-cal-out href="#" target="_blank" rel="noopener">Abrirlo en otra pestaña <span class="arw" aria-hidden="true">→</span></a>
+        <a class="btn btn-primary" data-cal-out href="https://calendly.com/mateomorbi19/sesion-de-consultoria" target="_blank" rel="noopener">Abrirlo en otra pestaña <span class="arw" aria-hidden="true">→</span></a>
       </div>
     </div>
   </div>
@@ -683,8 +881,9 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
 
   /* ============================================================
      CTA — el calendario se abre adentro de la landing
-     Los CTAs son <a> al link real de Calendly: si el JS no corre o el
-     iframe queda bloqueado, el botón sigue llevando al calendario.
+     El href real de Calendly está escrito en el HTML de cada CTA, no lo pone
+     este script: si el JS no corre, el botón sigue llevando al calendario.
+     Acá abajo sólo se le agrega el comportamiento de modal encima.
      ============================================================ */
   var CAL_URL    = "https://calendly.com/mateomorbi19/sesion-de-consultoria";
   var CAL_ORIGIN = "https://calendly.com";
@@ -701,7 +900,18 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
   var inertEls  = [];
   var keptY     = 0;
 
-  document.querySelectorAll("[data-cal],[data-cal-out]").forEach(function(a){ a.href = CAL_URL; });
+  /* Las UTM con las que entró la visita viajan hasta el evento de Calendly:
+     Calendly las guarda y aparecen en el mail de confirmación y en el webhook.
+     Sin esto, una reunión agendada no dice si vino de la bio, de una story o de un DM. */
+  function utmTail(){
+    if (!("URLSearchParams" in window)) return "";
+    var qs = new URLSearchParams(location.search), tail = "";
+    ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(function(k){
+      var v = qs.get(k);
+      if (v) tail += "&" + k + "=" + encodeURIComponent(v);
+    });
+    return tail;
+  }
 
   /* Mismos parámetros que genera el embed oficial de Calendly: nos ahorra
      cargar su widget.js (30 kB de terceros que además los bloqueadores voltean). */
@@ -710,20 +920,38 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
       + "embed_domain=" + encodeURIComponent(location.hostname || "teotec.org")
       + "&embed_type=Inline"
       + "&hide_gdpr_banner=1"
-      + "&background_color=0C1424&text_color=E9F0FF&primary_color=2E6BFF";
+      + "&background_color=0C1424&text_color=E9F0FF&primary_color=2E6BFF"
+      + utmTail();
   }
+
+  /* Las mismas UTM sobre el href directo, para los casos en que el modal no se
+     usa: navegador de Instagram, ctrl+click, o el script caído. Es aditivo —
+     el href que ya viene en el HTML funciona igual si esto no llega a correr. */
+  (function(){
+    var tail = utmTail();
+    if (!tail) return;
+    document.querySelectorAll("[data-cal],[data-cal-out]").forEach(function(a){
+      a.href = CAL_URL + "?" + tail.slice(1);
+    });
+  })();
 
   function mountCal(){
     if (calFrame) return;
     calFrame = document.createElement("iframe");
     calFrame.title = "Agendá tu reunión con TEOTEC";
     calFrame.setAttribute("frameborder", "0");
-    calFrame.setAttribute("allow", "camera; microphone; fullscreen; payment");
-    calFrame.addEventListener("load", ready);
+    /* un calendario no necesita cámara, micrófono ni pagos */
+    calFrame.setAttribute("allow", "fullscreen");
+    /* Ojo: acá NO va un listener de 'load'. Ese evento también lo disparan la
+       página de error y el frame bloqueado, así que estaba tomando el fracaso
+       como señal de éxito: escondía el spinner y cancelaba el timeout, y el
+       usuario quedaba mirando una caja negra sin error y sin salida.
+       El único aviso confiable de que Calendly arrancó es su propio postMessage
+       (calendly.profile_page_viewed), que ya escuchamos más abajo. */
     calFrame.src = embedUrl();
     calWidget.appendChild(calFrame);
-    /* si en 15 s el iframe nunca cargó, ofrecemos el link directo */
-    calTimer = setTimeout(function(){ if (!calLoad.hidden) fail(); }, 15000);
+    /* si en 7 s Calendly nunca saludó, mostramos el link directo */
+    calTimer = setTimeout(function(){ if (!calLoad.hidden) fail(); }, 7000);
   }
   function ready(){ clearTimeout(calTimer); calLoad.hidden = true; calErr.hidden = true; }
   function fail(){ clearTimeout(calTimer); calLoad.hidden = true; calErr.hidden = false; }
@@ -777,8 +1005,16 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
   }
   function onCalKey(e){ if (e.key === "Escape" || e.key === "Esc"){ e.preventDefault(); closeCal(); } }
 
+  /* El navegador embebido de Instagram y Facebook particiona el storage de
+     terceros, y el embed de Calendly lo necesita para inicializar: adentro del
+     modal se queda colgado. Como ese navegador es justo por donde llega el
+     tráfico del link de la bio, ahí no interceptamos el click — el <a> abre
+     Calendly como página propia, que es first-party y carga siempre. */
+  var IN_APP = /(FBAN|FBAV|FB_IAB|Instagram)/.test(navigator.userAgent || "");
+
   document.querySelectorAll("[data-cal]").forEach(function(a){
     a.addEventListener("click", function(e){
+      if (IN_APP) return;
       /* ctrl/cmd/click del medio siguen abriendo en pestaña nueva */
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       e.preventDefault();
@@ -802,17 +1038,21 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
   function onScroll(){ nav.classList.toggle("scrolled", window.scrollY > 24); }
   onScroll(); window.addEventListener("scroll", onScroll, { passive:true });
 
-  /* ---------- Reveal on scroll ---------- */
+  /* ---------- Reveal on scroll ----------
+     Si no hay animación que hacer (reduced-motion o sin IntersectionObserver),
+     no se toca nada: sin la clase .js el CSS deja todo visible de entrada. */
   var reveals = document.querySelectorAll(".reveal");
-  if (reduce || !("IntersectionObserver" in window)) {
-    reveals.forEach(function(el){ el.classList.add("in"); });
-  } else {
+  if (!reduce && ("IntersectionObserver" in window)) {
+    /* Recién acá se habilita el opacity:0. Todo lo que puede fallar en este
+       script ya pasó: si hubiera reventado antes, nada quedó escondido. */
+    document.documentElement.classList.add("js");
+
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
         if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
       });
     }, { threshold:0.14, rootMargin:"0px 0px -8% 0px" });
-    var groups = [document.querySelector(".hero-copy"), document.querySelector(".facts"),
+    var groups = [document.querySelector(".facts"),
                   document.querySelector(".who-grid"), document.querySelector(".skills"),
                   document.querySelector(".steps"), document.querySelector(".two-col")];
     reveals.forEach(function(el){
@@ -823,6 +1063,15 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
       }
       io.observe(el);
     });
+
+    /* Cinturón: si a los 2,5 s el observer no disparó ni una sola vez, algo
+       salió mal y destapamos todo. Acotado a "ninguno" para no matar la
+       animación de scroll normal de los bloques de más abajo. */
+    setTimeout(function(){
+      if (!document.querySelector(".reveal.in")) {
+        reveals.forEach(function(el){ el.style.transitionDelay = "0s"; el.classList.add("in"); });
+      }
+    }, 2500);
   }
 
   /* ============================================================
@@ -832,27 +1081,27 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
      ============================================================ */
   var CHANNELS = {
     wa: {
-      who:"Agente · WhatsApp", mark:"#i-wa",
+      who:"Tienda Norte · WhatsApp", cap:"Vende y cobra", mark:"#i-wa",
       color:"#14A08D", grad:"linear-gradient(135deg,#0F8272,#0A5F54)", fg:"#fff",
       script:[
         { from:"user", text:"Hola! Tenés la campera de cuero en talle M?" },
-        { from:"bot",  text:"¡Hola! Sí, me queda una en M. Sale $89.900 y va en 3 cuotas sin interés.", link:"tienda.com/campera-cuero" },
+        { from:"bot",  text:"Sí, me queda una en M. Sale $89.900 y va en 3 cuotas sin interés.", link:"tiendanorte.com.ar/campera-cuero" },
         { from:"user", text:"Me la reservás?" },
         { from:"bot",  text:"Ya te la reservo por 24 hs. Te dejo el link para dejarla paga y es tuya." }
       ]
     },
     ig: {
-      who:"Agente · Instagram", mark:"#i-ig",
+      who:"Estudio Bellamar · Instagram", cap:"Califica y agenda", mark:"#i-ig",
       color:"#E1306C", grad:"linear-gradient(135deg,#F77737,#E1306C 55%,#9B36B7)", fg:"#fff",
       script:[
-        { from:"user", text:"Vi tu historia, cómo funciona el servicio?" },
-        { from:"bot",  text:"¡Hola! Te cuento rápido. ¿Es para un negocio que ya funciona o estás arrancando?" },
-        { from:"user", text:"Ya tengo el local hace 2 años" },
-        { from:"bot",  text:"Perfecto. Tengo mañana 15:30 o jueves 11:00 para una llamada de 15 min. ¿Cuál te sirve?" }
+        { from:"user", text:"Hola! Hacen depilación definitiva?" },
+        { from:"bot",  text:"¡Hola! Sí. ¿Es la primera vez o ya te hiciste sesiones en otro lado?" },
+        { from:"user", text:"Ya me hice 3 el año pasado" },
+        { from:"bot",  text:"Entonces vas por mantenimiento. Te reservo una valoración sin cargo: mañana 15:30 o jueves 11:00." }
       ]
     },
     fb: {
-      who:"Agente · Facebook", mark:"#i-fb",
+      who:"Vidrios del Sur · Facebook", cap:"Deriva a una persona", mark:"#i-fb",
       color:"#1877F2", grad:"linear-gradient(135deg,#3B8DF7,#0A5DC2)", fg:"#fff",
       script:[
         { from:"user", text:"Necesito facturar a nombre de mi empresa, se puede?" },
@@ -866,6 +1115,7 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
   var chat    = document.getElementById("chat");
   var body    = document.getElementById("chatBody");
   var who     = document.getElementById("chatWho");
+  var cap     = document.getElementById("chatCap");
   var avMark  = document.getElementById("avMark");
   var tabs    = Array.prototype.slice.call(document.querySelectorAll(".ch-tab"));
   var timers  = [];
@@ -924,6 +1174,7 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
     chat.style.setProperty("--ch-grad", c.grad);
     chat.style.setProperty("--ch-fg", c.fg);
     who.textContent = c.who;
+    cap.textContent = c.cap;
     avMark.querySelector("use").setAttribute("href", c.mark);
     tabs.forEach(function(t){
       var on = t.getAttribute("data-ch") === key;
@@ -960,7 +1211,9 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
 
   /* ---------- Claude Code: línea que se tipea al entrar en viewport ---------- */
   var ccTxt = document.getElementById("ccTxt");
-  var CC_LINE = "claude construí el agente";
+  /* La línea va en castellano llano a propósito: escrita como comando de
+     terminal reforzaba justo la objeción que "sin ser programador" desactiva. */
+  var CC_LINE = "reservá turnos y avisá cuando no haya lugar";
   function typeClaude(){
     var i = 0, cur = ccTxt.querySelector(".cur");
     (function step(){
