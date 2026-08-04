@@ -128,16 +128,6 @@ a{color:inherit;text-decoration:none}
 .hero-cta{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
 .assur{font-family:var(--f-mono);font-size:12.5px;color:var(--muted-2);display:flex;align-items:center;gap:10px}
 .assur .sep{width:4px;height:4px;border-radius:50%;background:var(--muted-2)}
-/* dos puertas de auto-selección: el visitante se ubica sin scrollear a ciegas */
-.hero-pick{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:26px;font-size:14.5px}
-.hero-pick a{color:var(--muted);border-bottom:1px solid rgba(120,150,200,.28);padding-bottom:2px;transition:color .25s,border-color .25s}
-.hero-pick a:hover{color:var(--cyan);border-bottom-color:rgba(53,214,255,.55)}
-.hero-pick .sep{flex:none;width:4px;height:4px;border-radius:50%;background:var(--muted-2)}
-@media(max-width:560px){
-  .hero-pick{gap:10px;font-size:14px}
-  .hero-pick .sep{display:none}
-  .hero-pick a{width:100%}
-}
 
 /* ===================== CHAT DEMO MULTICANAL (signature) ===================== */
 .chat-wrap{max-width:430px;margin-left:auto;width:100%}
@@ -432,7 +422,10 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
   .hero-cta{align-items:stretch;width:100%}
   .hero-cta .btn-primary,
   .final-box .btn-primary{width:100%}
-  .hero-cta .assur{justify-content:center;text-align:center;flex-wrap:wrap;row-gap:4px}
+  /* en columna y sin el punto: en fila el separador se quedaba colgado
+     solo al final del primer renglón */
+  .hero-cta .assur{flex-direction:column;justify-content:center;text-align:center;row-gap:4px}
+  .hero-cta .assur .sep{display:none}
   .final-box .btn-primary{font-size:17px}
 
   /* la píldora del hero entra en una sola línea */
@@ -554,8 +547,6 @@ body.cal-lock{position:fixed;left:0;right:0;width:100%;overflow-y:scroll}
           <a class="btn btn-primary" data-cal href="https://calendly.com/mateomorbi19/sesion-de-consultoria" target="_blank" rel="noopener"><svg class="cal-ic" aria-hidden="true"><use href="#i-cal"/></svg>Agendar reunión <span class="arw" aria-hidden="true">→</span></a>
           <span class="assur">30 minutos, sin costo <span class="sep"></span> Hablás con Mateo, no con un vendedor</span>
         </div>
-        <!-- El visitante se ubica solo, sin mover un bloque de lugar -->
-        <p class="hero-pick"><a href="#para-negocio">Tengo un negocio que vende por chat</a> <span class="sep" aria-hidden="true"></span> <a href="#para-habilidad">Quiero la habilidad para vender el servicio</a></p>
       </div>
 
       <!-- signature: demo multicanal -->
